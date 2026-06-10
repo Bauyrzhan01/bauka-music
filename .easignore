@@ -1,0 +1,8 @@
+# Музыка и тяжёлые файлы — не нужны для сборки APK (API на сервере)
+assets/music/**
+server/uploads/**
+node_modules/.cache/**
+
+# Локальная разработка
+.expo/**
+.git/**
