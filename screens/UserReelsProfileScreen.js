@@ -15,13 +15,13 @@ import {
 } from '../api/trackVersionsApi';
 import { isStandaloneApp } from '../constants/standalone';
 import { useMyLibrary } from '../context/MyLibraryContext';
-import { collectLocalReels } from '../utils/localReels';
+import { collectAllLocalReels } from '../utils/localReels';
 import { useAuth } from '../context/AuthContext';
 import { useMusicCatalog } from '../context/MusicCatalogContext';
 
 import { filterMyReels } from '../utils/filterMyReels';
 import { resolveTrackForVersion } from '../utils/resolveTrackForVersion';
-import { displayContentTitle } from '../utils/displayContentTitle';
+import ContentAuthorRow from '../components/player/ContentAuthorRow';
 import { resolveContentUserAvatar } from '../utils/resolveContentUserAvatar';
 import UserAvatarChip from '../components/UserAvatarChip';
 import ReelCardPreview from '../components/player/ReelCardPreview';
@@ -41,7 +41,7 @@ export default function UserReelsProfileScreen({
   useOsBack(onBack);
   const { user: currentUser } = useAuth();
   const { tracks, lastSyncedAt, refreshCatalog } = useMusicCatalog();
-  const { entries, removeVideoFromEntry } = useMyLibrary();
+  const { entries, trackReelsMap, removeVideoFromEntry } = useMyLibrary();
 
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -70,7 +70,16 @@ export default function UserReelsProfileScreen({
     setError('');
 
     if (isStandaloneApp()) {
-      setVideos(isSelf ? collectLocalReels(entries) : []);
+      if (!isSelf) {
+        setVideos([]);
+        setLoading(false);
+        return;
+      }
+      const resolveTrack = (trackId) =>
+        tracks.find((track) => track.id === trackId) ||
+        entries.find((entry) => entry.id === trackId) ||
+        null;
+      setVideos(collectAllLocalReels(entries, trackReelsMap, resolveTrack));
       setLoading(false);
       return;
     }
@@ -86,7 +95,7 @@ export default function UserReelsProfileScreen({
     } finally {
       setLoading(false);
     }
-  }, [userEmail, isSelf, entries]);
+  }, [userEmail, isSelf, entries, trackReelsMap, tracks]);
 
   useEffect(() => {
     loadUserReels();
@@ -141,7 +150,7 @@ export default function UserReelsProfileScreen({
     <View style={styles.container}>
       <View style={styles.header}>
         <Pressable onPress={onBack} accessibilityLabel="Назад" hitSlop={8}>
-          <Ionicons name="arrow-back" size={24} color="#111" />
+          <Ionicons name="arrow-back" size={24} color="#ffffff" />
         </Pressable>
         <Text style={styles.headerTitle}>Профиль</Text>
         <View style={styles.headerSpacer} />
@@ -172,7 +181,7 @@ export default function UserReelsProfileScreen({
         <Text style={styles.sectionTitle}>Reels</Text>
 
         {loading ? (
-          <ActivityIndicator color="#111" style={styles.loader} />
+          <ActivityIndicator color="#ffffff" style={styles.loader} />
         ) : null}
 
         {error ? (
@@ -211,11 +220,15 @@ export default function UserReelsProfileScreen({
                         </Text>
                       </View>
                     ) : null}
-                    {displayContentTitle(item.title) ? (
-                      <Text style={styles.cardTitle} numberOfLines={1}>
-                        {displayContentTitle(item.title)}
-                      </Text>
-                    ) : null}
+                    <View style={styles.authorTag} pointerEvents="none">
+                      <ContentAuthorRow
+                        item={item}
+                        currentUser={currentUser}
+                        variant="onDark"
+                        avatarSize={18}
+                        textStyle={styles.authorText}
+                      />
+                    </View>
                   </Pressable>
                   {isSelf ? (
                     <ReelMoreMenu
@@ -247,7 +260,7 @@ export default function UserReelsProfileScreen({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#000000',
   },
   header: {
     flexDirection: 'row',
@@ -255,14 +268,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor: '#eee',
+    borderBottomColor: '#333333',
   },
   headerTitle: {
     flex: 1,
     textAlign: 'center',
     fontSize: 17,
     fontWeight: '700',
-    color: '#111',
+    color: '#ffffff',
   },
   headerSpacer: {
     width: 24,
@@ -278,11 +291,11 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 20,
     fontWeight: '700',
-    color: '#111',
+    color: '#ffffff',
   },
   email: {
     fontSize: 14,
-    color: '#666',
+    color: '#9a9a9a',
   },
   selfBadge: {
     fontSize: 12,
@@ -291,13 +304,13 @@ const styles = StyleSheet.create({
   },
   stats: {
     fontSize: 14,
-    color: '#888',
+    color: '#9a9a9a',
     marginTop: 4,
   },
   sectionTitle: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#111',
+    color: '#ffffff',
     paddingHorizontal: 16,
     marginBottom: 10,
   },
@@ -311,7 +324,7 @@ const styles = StyleSheet.create({
   },
   empty: {
     paddingHorizontal: 16,
-    color: '#888',
+    color: '#9a9a9a',
     fontSize: 14,
   },
   row: {
@@ -327,7 +340,7 @@ const styles = StyleSheet.create({
     height: CARD_HEIGHT,
     borderRadius: 12,
     overflow: 'hidden',
-    backgroundColor: '#111',
+    backgroundColor: '#2b2b2b',
     borderWidth: 1,
     borderColor: '#222',
   },
@@ -355,13 +368,15 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#fff',
   },
-  cardTitle: {
+  authorTag: {
     position: 'absolute',
-    left: 8,
-    right: 8,
-    bottom: 8,
-    fontSize: 11,
-    fontWeight: '700',
-    color: '#fff',
+    left: 6,
+    right: 6,
+    bottom: 6,
+    zIndex: 2,
+  },
+  authorText: {
+    fontSize: 10,
+    color: 'rgba(255,255,255,0.85)',
   },
 });

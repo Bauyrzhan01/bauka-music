@@ -14,8 +14,10 @@ import CategoryFilterRow from '../components/search/CategoryFilterRow';
 import { searchCategories, searchTracks } from '../utils/searchTracks';
 import { usePlayer } from '../context/PlayerContext';
 import { useMusicCatalog } from '../context/MusicCatalogContext';
+import { useOsBack } from '../hooks/useOsBack';
 
-export default function SearchScreen({ searchPreset, onClearPreset }) {
+export default function SearchScreen({ searchPreset, onClearPreset, onBack }) {
+  useOsBack(onBack);
   const { playTrack, openPlayer, currentTrack } = usePlayer();
   const { tracks: catalogTracks } = useMusicCatalog();
   const [query, setQuery] = useState('');
@@ -52,7 +54,6 @@ export default function SearchScreen({ searchPreset, onClearPreset }) {
 
   const listHeader = (
     <View>
-      <Text style={styles.title}>Поиск</Text>
       <SearchBar
         value={query}
         onChangeText={(text) => {
@@ -87,7 +88,7 @@ export default function SearchScreen({ searchPreset, onClearPreset }) {
                 style={styles.categoryMatch}
                 onPress={() => handleCategorySelect(cat)}
               >
-                <Ionicons name={cat.icon} size={16} color="#111" />
+                <Ionicons name={cat.icon} size={16} color="#ffffff" />
                 <Text style={styles.categoryMatchText}>{cat.name}</Text>
               </Pressable>
             ))}
@@ -119,7 +120,7 @@ export default function SearchScreen({ searchPreset, onClearPreset }) {
 
   const emptyComponent = (
     <View style={styles.empty}>
-      <Ionicons name="search-outline" size={48} color="#ccc" />
+      <Ionicons name="search-outline" size={48} color="#666666" />
       <Text style={styles.emptyTitle}>Ничего не найдено</Text>
       <Text style={styles.emptyText}>
         Попробуйте другое название или выберите категорию
@@ -129,6 +130,13 @@ export default function SearchScreen({ searchPreset, onClearPreset }) {
 
   return (
     <View style={styles.container}>
+      <View style={styles.topBar}>
+        <Pressable onPress={onBack} style={styles.backBtn} accessibilityLabel="Назад">
+          <Ionicons name="chevron-back" size={24} color="#ffffff" />
+        </Pressable>
+        <Text style={styles.topTitle}>Поиск</Text>
+        <View style={styles.topSpacer} />
+      </View>
       <FlatList
         data={tracks}
         keyExtractor={(item) => item.id}
@@ -155,18 +163,33 @@ export default function SearchScreen({ searchPreset, onClearPreset }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#000000',
   },
   listContent: {
     flexGrow: 1,
     paddingBottom: 24,
   },
-  title: {
-    fontSize: 28,
+  topBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 8,
+    paddingVertical: 8,
+  },
+  backBtn: {
+    width: 40,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  topTitle: {
+    flex: 1,
+    textAlign: 'center',
+    fontSize: 17,
     fontWeight: '700',
-    paddingHorizontal: 16,
-    paddingTop: 8,
-    paddingBottom: 16,
+    color: '#ffffff',
+  },
+  topSpacer: {
+    width: 40,
   },
   section: {
     paddingHorizontal: 16,
@@ -175,7 +198,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#666',
+    color: '#9a9a9a',
     paddingHorizontal: 16,
     marginBottom: 8,
   },
@@ -192,11 +215,12 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: '#333333',
   },
   categoryMatchText: {
     fontSize: 13,
     fontWeight: '500',
+    color: '#ffffff',
   },
   authorChip: {
     alignSelf: 'flex-start',
@@ -205,7 +229,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 20,
-    backgroundColor: '#111',
+    backgroundColor: '#2b2b2b',
   },
   authorChipText: {
     color: '#fff',
@@ -221,11 +245,12 @@ const styles = StyleSheet.create({
   emptyTitle: {
     fontSize: 17,
     fontWeight: '600',
+    color: '#ffffff',
     marginTop: 8,
   },
   emptyText: {
     fontSize: 14,
-    color: '#888',
+    color: '#9a9a9a',
     textAlign: 'center',
     lineHeight: 20,
   },

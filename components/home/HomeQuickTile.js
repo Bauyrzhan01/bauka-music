@@ -41,12 +41,12 @@ const styles = StyleSheet.create({
     height: COVER_SIZE,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#f4f4f5',
+    backgroundColor: '#2b2b2b',
     borderRadius: 6,
     overflow: 'hidden',
   },
   tilePressed: {
-    backgroundColor: '#e8e8e8',
+    backgroundColor: '#2b2b2b',
   },
   cover: {
     width: COVER_SIZE,
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     fontSize: 12,
     fontWeight: '700',
-    color: '#111',
+    color: '#ffffff',
     lineHeight: 15,
   },
 });

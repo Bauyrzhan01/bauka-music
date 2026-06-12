@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tolqyn — Wi‑Fi</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      font-family: system-ui, sans-serif; background: #120900; color: #f5f5f5; padding: 24px;
+    }
+    .card {
+      max-width: 420px; width: 100%; background: #1a1208; border: 1px solid #3d2e1a;
+      border-radius: 20px; padding: 28px 24px; text-align: center;
+    }
+    h1 { font-size: 1.25rem; margin: 0 0 8px; }
+    p { color: #c9b89a; font-size: 0.9rem; line-height: 1.5; margin: 0 0 20px; }
+    img { width: 280px; height: 280px; border-radius: 12px; background: #fff; padding: 12px; }
+    a { display: inline-block; margin-top: 18px; color: #f5c76a; word-break: break-all; font-size: 0.85rem; }
+    ol { text-align: left; color: #c9b89a; font-size: 0.85rem; line-height: 1.6; padding-left: 1.2rem; margin: 16px 0 0; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Tolqyn — Wi‑Fi</h1>
+    <p>QR для скачивания в той же Wi‑Fi сети. Нужен запущенный сервер: npm run server</p>
+    <img src="./app-download-qr-wifi.png" alt="QR код" width="280" height="280" />
+    <a href="http://10.25.98.8:3001/app">http://10.25.98.8:3001/app</a>
+    <ol><li>Телефон и ноутбук в <strong>одной Wi‑Fi</strong>.</li><li>Откройте в <strong>Chrome</strong> на Android.</li><li>Нажмите <strong>Скачать для Android</strong>.</li></ol>
+  </div>
+</body>
+</html>

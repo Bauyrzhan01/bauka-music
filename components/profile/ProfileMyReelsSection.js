@@ -14,10 +14,11 @@ import { isStandaloneApp } from '../../constants/standalone';
 import { useAuth } from '../../context/AuthContext';
 import { useMyLibrary } from '../../context/MyLibraryContext';
 import { useMusicCatalog } from '../../context/MusicCatalogContext';
-import { collectLocalReels } from '../../utils/localReels';
+import { usePlayer } from '../../context/PlayerContext';
+import { collectAllLocalReels } from '../../utils/localReels';
 import { resolveTrackForVersion } from '../../utils/resolveTrackForVersion';
 import { filterMyReels } from '../../utils/filterMyReels';
-import { displayContentTitle } from '../../utils/displayContentTitle';
+import ContentAuthorRow from '../player/ContentAuthorRow';
 import ReelCardPreview from '../player/ReelCardPreview';
 import ContentReelsViewer from '../player/ContentReelsViewer';
 import ReelMoreMenu from './ReelMoreMenu';
@@ -29,7 +30,8 @@ const standalone = isStandaloneApp();
 export default function ProfileMyReelsSection({ onCountChange, onOpenMain }) {
   const { user } = useAuth();
   const { tracks, lastSyncedAt, refreshCatalog } = useMusicCatalog();
-  const { entries, removeVideoFromEntry } = useMyLibrary();
+  const { entries, trackReelsMap, removeVideoFromEntry } = useMyLibrary();
+  const { playTrack } = usePlayer();
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -41,7 +43,11 @@ export default function ProfileMyReelsSection({ onCountChange, onOpenMain }) {
     setError('');
 
     if (standalone) {
-      setVideos(collectLocalReels(entries));
+      const resolveTrack = (trackId) =>
+        tracks.find((track) => track.id === trackId) ||
+        entries.find((entry) => entry.id === trackId) ||
+        null;
+      setVideos(collectAllLocalReels(entries, trackReelsMap, resolveTrack));
       setLoading(false);
       return;
     }
@@ -58,7 +64,7 @@ export default function ProfileMyReelsSection({ onCountChange, onOpenMain }) {
     } finally {
       setLoading(false);
     }
-  }, [user?.email, entries]);
+  }, [user?.email, entries, trackReelsMap, tracks]);
 
   useEffect(() => {
     loadMine();
@@ -73,11 +79,16 @@ export default function ProfileMyReelsSection({ onCountChange, onOpenMain }) {
     setViewerOpen(true);
   };
 
+  const playReelTrack = (track) => {
+    if (!track) return;
+    playTrack(track, tracks);
+  };
+
   return (
     <View style={styles.wrap}>
       <View style={styles.header}>
         <View style={styles.headerLeft}>
-          <Ionicons name="videocam" size={18} color="#111" />
+          <Ionicons name="videocam" size={18} color="#ffffff" />
           <Text style={styles.title}>Мои Reels</Text>
           {!loading ? (
             <Text style={styles.count}>{videos.length}</Text>
@@ -89,7 +100,7 @@ export default function ProfileMyReelsSection({ onCountChange, onOpenMain }) {
       </View>
 
       {loading ? (
-        <ActivityIndicator color="#111" style={styles.loader} />
+        <ActivityIndicator color="#ffffff" style={styles.loader} />
       ) : null}
 
       {error ? (
@@ -101,7 +112,7 @@ export default function ProfileMyReelsSection({ onCountChange, onOpenMain }) {
 
       {!loading && !error && videos.length === 0 ? (
         <View style={styles.emptyBox}>
-          <Ionicons name="film-outline" size={28} color="#999" />
+          <Ionicons name="film-outline" size={28} color="#888888" />
           <Text style={styles.emptyTitle}>Пока нет ваших видео</Text>
           <Text style={styles.emptyText}>
             {standalone
@@ -135,20 +146,26 @@ export default function ProfileMyReelsSection({ onCountChange, onOpenMain }) {
                   <ReelCardPreview item={item} suspended={viewerOpen} />
                 </View>
                 {track ? (
-                  <View style={styles.trackTag} pointerEvents="none">
+                  <Pressable
+                    style={styles.trackTag}
+                    onPress={() => playReelTrack(track)}
+                    accessibilityLabel={`Играть ${track.title}`}
+                  >
                     <Ionicons name="musical-note" size={12} color="#fff" />
                     <Text style={styles.trackTagText} numberOfLines={1}>
                       {track.title}
                     </Text>
-                  </View>
+                  </Pressable>
                 ) : null}
-                {displayContentTitle(item.title) ? (
-                  <Text style={styles.cardTitle} numberOfLines={2}>
-                    {displayContentTitle(item.title)}
-                  </Text>
-                ) : (
-                  <Text style={styles.cardTitleMuted}>Моё видео</Text>
-                )}
+                <View style={styles.authorTag} pointerEvents="none">
+                  <ContentAuthorRow
+                    item={item}
+                    currentUser={user}
+                    variant="onDark"
+                    avatarSize={18}
+                    textStyle={styles.authorText}
+                  />
+                </View>
               </Pressable>
             );
           })}
@@ -186,11 +203,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#111',
+    color: '#ffffff',
   },
   count: {
     fontSize: 14,
-    color: '#888',
+    color: '#9a9a9a',
     fontWeight: '600',
   },
   loader: {
@@ -208,19 +225,19 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 14,
     borderWidth: 1,
-    borderColor: '#eee',
-    backgroundColor: '#fafafa',
+    borderColor: '#333333',
+    backgroundColor: '#1a1a1a',
     alignItems: 'center',
     gap: 8,
   },
   emptyTitle: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#111',
+    color: '#ffffff',
   },
   emptyText: {
     fontSize: 13,
-    color: '#666',
+    color: '#9a9a9a',
     textAlign: 'center',
     lineHeight: 18,
   },
@@ -229,7 +246,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 10,
-    backgroundColor: '#111',
+    backgroundColor: '#2b2b2b',
   },
   emptyBtnText: {
     color: '#fff',
@@ -246,7 +263,7 @@ const styles = StyleSheet.create({
     height: CARD_HEIGHT,
     borderRadius: 12,
     overflow: 'hidden',
-    backgroundColor: '#111',
+    backgroundColor: '#2b2b2b',
     borderWidth: 1,
     borderColor: '#222',
   },
@@ -273,21 +290,15 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#fff',
   },
-  cardTitle: {
+  authorTag: {
     position: 'absolute',
-    left: 8,
-    right: 8,
-    bottom: 8,
-    fontSize: 11,
-    fontWeight: '700',
-    color: '#fff',
+    left: 6,
+    right: 6,
+    bottom: 6,
+    zIndex: 2,
   },
-  cardTitleMuted: {
-    position: 'absolute',
-    left: 8,
-    right: 8,
-    bottom: 8,
-    fontSize: 11,
-    color: 'rgba(255,255,255,0.7)',
+  authorText: {
+    fontSize: 10,
+    color: 'rgba(255,255,255,0.85)',
   },
 });

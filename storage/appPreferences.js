@@ -3,7 +3,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const PREFS_KEY = '@bauka-music/app-preferences';
 
 const DEFAULT_PREFS = {
-  hideBundledTracks: true,
+  hideBundledTracks: false,
+  playbackVolume: 1,
 };
 
 export async function loadAppPreferences() {

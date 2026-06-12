@@ -46,7 +46,7 @@ export default function NowPlayingSection() {
     return (
       <View style={styles.wrap}>
         <Text style={styles.title}>Сейчас слушают</Text>
-        <ActivityIndicator color="#111" style={styles.loader} />
+        <ActivityIndicator color="#ffffff" style={styles.loader} />
       </View>
     );
   }
@@ -59,7 +59,7 @@ export default function NowPlayingSection() {
   return (
     <View style={styles.wrap}>
       <View style={styles.header}>
-        <Ionicons name="radio" size={18} color="#111" />
+        <Ionicons name="radio" size={18} color="#ffffff" />
         <Text style={styles.title}>Сейчас слушают</Text>
       </View>
 
@@ -83,7 +83,7 @@ export default function NowPlayingSection() {
                     contentFit="cover"
                   />
                 ) : (
-                  <Ionicons name="musical-note" size={14} color="#111" />
+                  <Ionicons name="musical-note" size={14} color="#ffffff" />
                 )}
               </View>
               <View style={styles.chipText}>
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#111',
+    color: '#ffffff',
   },
   loader: {
     paddingVertical: 8,
@@ -135,14 +135,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: '#eee',
-    backgroundColor: '#fafafa',
+    borderColor: '#333333',
+    backgroundColor: '#1a1a1a',
   },
   chipIcon: {
     width: 32,
     height: 32,
     borderRadius: 8,
-    backgroundColor: '#f0f0f0',
+    backgroundColor: '#2b2b2b',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -158,11 +158,11 @@ const styles = StyleSheet.create({
   chipUser: {
     fontSize: 12,
     fontWeight: '700',
-    color: '#111',
+    color: '#ffffff',
   },
   chipTrack: {
     fontSize: 11,
-    color: '#666',
+    color: '#9a9a9a',
     marginTop: 2,
   },
 });

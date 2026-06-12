@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tolqyn — QR для GitHub</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      background: #120900;
+      color: #f5f5f5;
+      padding: 24px;
+    }
+    .card {
+      max-width: 420px;
+      width: 100%;
+      background: #1a1208;
+      border: 1px solid #3d2e1a;
+      border-radius: 20px;
+      padding: 28px 24px;
+      text-align: center;
+    }
+    h1 { font-size: 1.25rem; margin: 0 0 8px; }
+    p { color: #c9b89a; font-size: 0.9rem; line-height: 1.5; margin: 0 0 20px; }
+    img {
+      width: 280px;
+      height: 280px;
+      border-radius: 12px;
+      background: #fff;
+      padding: 12px;
+    }
+    a {
+      display: inline-block;
+      margin-top: 18px;
+      color: #f5c76a;
+      word-break: break-all;
+      font-size: 0.85rem;
+    }
+    ol {
+      text-align: left;
+      color: #c9b89a;
+      font-size: 0.85rem;
+      line-height: 1.6;
+      padding-left: 1.2rem;
+      margin: 16px 0 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Tolqyn</h1>
+    <p>Отсканируйте QR в Chrome на телефоне — откроется репозиторий GitHub.</p>
+    <img src="./github-repo-qr.png" alt="QR код GitHub" width="280" height="280" />
+    <a href="https://github.com/Bauyrzhan01/bauka-music">https://github.com/Bauyrzhan01/bauka-music</a>
+    <ol>
+      <li>Войдите в GitHub на телефоне (репозиторий приватный).</li>
+      <li>Нажмите <strong>Code</strong> → <strong>Download ZIP</strong>.</li>
+    </ol>
+  </div>
+</body>
+</html>

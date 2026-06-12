@@ -1,5 +1,6 @@
 import { ScrollView, Pressable, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { mobileTheme } from '../../constants/mobileTheme';
 
 export default function CategoryFilterRow({ categories, activeId, onSelect }) {
   return (
@@ -27,7 +28,7 @@ export default function CategoryFilterRow({ categories, activeId, onSelect }) {
             <Ionicons
               name={cat.icon}
               size={14}
-              color={active ? '#fff' : '#111'}
+              color={active ? mobileTheme.text : mobileTheme.textMuted}
             />
             <Text style={[styles.chipText, active && styles.chipTextActive]}>
               {cat.name}
@@ -52,20 +53,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 8,
     borderRadius: 20,
-    borderWidth: 1.5,
-    borderColor: '#000',
-    backgroundColor: '#fff',
+    backgroundColor: mobileTheme.surface,
   },
   chipActive: {
-    backgroundColor: '#111',
-    borderColor: '#111',
+    backgroundColor: mobileTheme.surfaceLight,
   },
   chipText: {
     fontSize: 13,
-    color: '#111',
+    color: mobileTheme.textMuted,
     fontWeight: '500',
   },
   chipTextActive: {
-    color: '#fff',
+    color: mobileTheme.text,
+    fontWeight: '600',
   },
 });

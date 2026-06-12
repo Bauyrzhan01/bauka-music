@@ -26,7 +26,7 @@ export default function ProfileRecentSection() {
   return (
     <View style={styles.wrap}>
       <View style={styles.header}>
-        <Ionicons name="time-outline" size={18} color="#111" />
+        <Ionicons name="time-outline" size={18} color="#ffffff" />
         <Text style={styles.title}>Недавно слушали</Text>
       </View>
       <View style={styles.list}>
@@ -51,10 +51,10 @@ export default function ProfileRecentSection() {
                   {track.title}
                 </Text>
                 <Text style={styles.trackArtist} numberOfLines={1}>
-                  {track.artist || 'Bauka Music'}
+                  {track.artist || 'Tolqyn'}
                 </Text>
               </View>
-              <Ionicons name="play-circle" size={28} color="#111" />
+              <Ionicons name="play-circle" size={28} color="#ffffff" />
             </Pressable>
           );
         })}
@@ -77,11 +77,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#111',
+    color: '#ffffff',
   },
   list: {
     borderTopWidth: 1,
-    borderTopColor: '#eee',
+    borderTopColor: '#333333',
   },
   row: {
     flexDirection: 'row',
@@ -90,10 +90,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#eee',
+    borderBottomColor: '#333333',
   },
   rowActive: {
-    backgroundColor: '#f7f7f7',
+    backgroundColor: '#1a1a1a',
   },
   rowText: {
     flex: 1,
@@ -102,11 +102,11 @@ const styles = StyleSheet.create({
   trackTitle: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#111',
+    color: '#ffffff',
   },
   trackArtist: {
     fontSize: 12,
-    color: '#666',
+    color: '#9a9a9a',
     marginTop: 2,
   },
 });

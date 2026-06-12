@@ -2,6 +2,7 @@ import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import TrackCover from '../TrackCover';
 import { enrichTrackWithCover } from '../../utils/trackCoverUrl';
+import { mobileTheme } from '../../constants/mobileTheme';
 
 const COVER_SIZE = 48;
 
@@ -33,7 +34,7 @@ export default function TrackResultItem({ track, onPress, active }) {
           </Text>
         )}
       </View>
-      <Ionicons name="chevron-forward" size={18} color="#999" />
+      <Ionicons name="chevron-forward" size={18} color={mobileTheme.iconMuted} />
     </Pressable>
   );
 }
@@ -46,11 +47,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 14,
     borderBottomWidth: 1,
-    borderBottomColor: '#eee',
-    backgroundColor: '#fff',
+    borderBottomColor: mobileTheme.border,
+    backgroundColor: mobileTheme.bg,
   },
   rowActive: {
-    backgroundColor: '#f7f7f7',
+    backgroundColor: mobileTheme.surfaceMuted,
   },
   textWrap: {
     flex: 1,
@@ -58,11 +59,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 15,
     fontWeight: '600',
-    color: '#111',
+    color: mobileTheme.text,
   },
   artist: {
     fontSize: 13,
-    color: '#666',
+    color: mobileTheme.textMuted,
     marginTop: 2,
   },
 });

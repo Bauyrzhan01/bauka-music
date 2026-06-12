@@ -16,7 +16,9 @@ import { resolveVersionMediaUrl } from '../../utils/resolveVersionMediaUrl';
 import { useVideoFitLayout } from '../../hooks/useVideoFitLayout';
 import StoriesProgressBar from './StoriesProgressBar';
 import ContentAuthorRow from './ContentAuthorRow';
-import { displayContentTitle } from '../../utils/displayContentTitle';
+import { resolveTrackForVersion } from '../../utils/resolveTrackForVersion';
+import { useMusicCatalog } from '../../context/MusicCatalogContext';
+import { usePlayer } from '../../context/PlayerContext';
 import { useOsBack } from '../../hooks/useOsBack';
 
 const HOLD_PAUSE_MS = 1000;
@@ -31,7 +33,6 @@ function ReelSlide({
   onEnded,
 }) {
   const uri = resolveVersionMediaUrl(item);
-  const shownTitle = displayContentTitle(item.title);
   const [frameReady, setFrameReady] = useState(false);
 
   const player = useVideoPlayer(uri, (instance) => {
@@ -130,9 +131,6 @@ function ReelSlide({
       ) : null}
       <View style={styles.gradient} />
       <View style={styles.meta}>
-        {shownTitle ? (
-          <Text style={styles.reelTitle}>{shownTitle}</Text>
-        ) : null}
         <ContentAuthorRow
           item={item}
           currentUser={currentUser}
@@ -150,10 +148,14 @@ export default function ContentReelsViewer({
   items,
   initialIndex = 0,
   trackTitle,
+  baseTrack: contextBaseTrack,
   onClose,
   currentUser,
+  presentation = 'modal',
 }) {
   useOsBack(onClose, visible);
+  const { tracks } = useMusicCatalog();
+  const { playTrack } = usePlayer();
   const insets = useSafeAreaInsets();
   const headerTop = insets.top + 8;
   const { height: windowHeight, width: windowWidth } = useWindowDimensions();
@@ -170,6 +172,17 @@ export default function ContentReelsViewer({
   );
 
   const activeItem = items[activeIndex];
+  const activeBaseTrack =
+    (activeItem && resolveTrackForVersion(activeItem, tracks)) ||
+    contextBaseTrack ||
+    null;
+  const activeTrackLabel =
+    activeBaseTrack?.title || activeItem?.trackTitle || trackTitle || null;
+
+  const handlePlayTrack = () => {
+    if (!activeBaseTrack) return;
+    playTrack(activeBaseTrack, tracks);
+  };
 
   useEffect(() => {
     if (visible) {
@@ -252,13 +265,7 @@ export default function ContentReelsViewer({
 
   if (!visible || !items.length) return null;
 
-  return (
-    <Modal
-      visible={visible}
-      animationType="fade"
-      presentationStyle="fullScreen"
-      onRequestClose={onClose}
-    >
+  const viewerBody = (
       <View
         style={styles.root}
         onLayout={(event) => {
@@ -320,26 +327,55 @@ export default function ContentReelsViewer({
           <Ionicons name="close" size={26} color="#fff" />
         </Pressable>
 
-        {trackTitle ? (
-          <View style={[styles.trackTag, { top: headerTop }]}>
+        {activeTrackLabel ? (
+          <Pressable
+            style={[styles.trackTag, { top: headerTop }]}
+            onPress={handlePlayTrack}
+            disabled={!activeBaseTrack}
+            hitSlop={8}
+            accessibilityLabel={`Играть ${activeTrackLabel}`}
+          >
             <Ionicons name="musical-notes" size={14} color="#fff" />
             <Text style={styles.trackTagText} numberOfLines={1}>
-              {trackTitle}
+              {activeTrackLabel}
             </Text>
-          </View>
+          </Pressable>
         ) : null}
       </View>
+  );
+
+  if (presentation === 'overlay') {
+    return (
+      <View style={styles.overlayHost} pointerEvents="box-none">
+        {viewerBody}
+      </View>
+    );
+  }
+
+  return (
+    <Modal
+      visible={visible}
+      animationType="fade"
+      presentationStyle="fullScreen"
+      onRequestClose={onClose}
+    >
+      {viewerBody}
     </Modal>
   );
 }
 
 const styles = StyleSheet.create({
+  overlayHost: {
+    ...StyleSheet.absoluteFillObject,
+    zIndex: 100,
+    elevation: 100,
+  },
   root: {
     flex: 1,
     backgroundColor: '#000',
   },
   slide: {
-    backgroundColor: '#111',
+    backgroundColor: '#2b2b2b',
     justifyContent: 'center',
   },
   videoStage: {
@@ -352,7 +388,7 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#111',
+    backgroundColor: '#2b2b2b',
   },
   gradient: {
     position: 'absolute',
@@ -367,12 +403,6 @@ const styles = StyleSheet.create({
     left: 16,
     right: 16,
     bottom: 48,
-  },
-  reelTitle: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: '700',
-    marginBottom: 4,
   },
   reelAuthor: {
     color: '#ddd',

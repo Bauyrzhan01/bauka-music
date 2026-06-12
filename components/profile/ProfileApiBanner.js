@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     padding: 12,
     borderRadius: 12,
-    backgroundColor: '#fff7ed',
+    backgroundColor: '#2a2015',
     borderWidth: 1,
     borderColor: '#fed7aa',
   },
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
   },
   url: {
     fontSize: 11,
-    color: '#888',
+    color: '#9a9a9a',
   },
   retry: {
     fontSize: 13,

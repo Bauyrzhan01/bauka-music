@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
   },
   secondaryBtnText: {
-    color: '#888',
+    color: '#9a9a9a',
     fontSize: 13,
     textDecorationLine: 'underline',
   },

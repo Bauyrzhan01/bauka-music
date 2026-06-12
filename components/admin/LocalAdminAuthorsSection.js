@@ -50,7 +50,7 @@ export default function LocalAdminAuthorsSection({ onOpenAuthor }) {
             style={styles.input}
             value={name}
             onChangeText={setName}
-            placeholder="Например: Bauka"
+            placeholder="Например: Tolqyn"
             maxLength={60}
           />
           <Text style={styles.label}>О себе</Text>
@@ -88,7 +88,7 @@ export default function LocalAdminAuthorsSection({ onOpenAuthor }) {
         </View>
       ) : (
         <Pressable style={styles.addBtn} onPress={() => setShowForm(true)}>
-          <Ionicons name="add-circle-outline" size={20} color="#111" />
+          <Ionicons name="add-circle-outline" size={20} color="#ffffff" />
           <Text style={styles.addBtnText}>Новый автор</Text>
         </Pressable>
       )}
@@ -136,7 +136,7 @@ export default function LocalAdminAuthorsSection({ onOpenAuthor }) {
                 {author.trackCount === 1 ? 'трек' : 'треков'}
               </Text>
             </View>
-            <Ionicons name="chevron-forward" size={18} color="#bbb" />
+            <Ionicons name="chevron-forward" size={18} color="#666666" />
           </Pressable>
           );
         })
@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
   },
   hint: {
     fontSize: 13,
-    color: '#666',
+    color: '#9a9a9a',
     lineHeight: 19,
   },
   addBtn: {
@@ -163,33 +163,33 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     borderWidth: 1,
     borderColor: '#111',
-    backgroundColor: '#fff',
+    backgroundColor: '#000000',
   },
   addBtnText: {
     fontSize: 15,
     fontWeight: '600',
-    color: '#111',
+    color: '#ffffff',
   },
   form: {
     gap: 8,
     padding: 14,
     borderRadius: 14,
-    backgroundColor: '#f8f8f8',
+    backgroundColor: '#1a1a1a',
   },
   label: {
     fontSize: 13,
     fontWeight: '600',
-    color: '#444',
+    color: '#9a9a9a',
     marginTop: 4,
   },
   input: {
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: '#333333',
     borderRadius: 10,
     paddingHorizontal: 12,
     paddingVertical: 10,
     fontSize: 15,
-    backgroundColor: '#fff',
+    backgroundColor: '#000000',
   },
   inputMultiline: {
     minHeight: 72,
@@ -205,18 +205,18 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: '#333333',
     alignItems: 'center',
   },
   cancelBtnText: {
     fontWeight: '600',
-    color: '#444',
+    color: '#9a9a9a',
   },
   createBtn: {
     flex: 1,
     paddingVertical: 12,
     borderRadius: 10,
-    backgroundColor: '#111',
+    backgroundColor: '#2b2b2b',
     alignItems: 'center',
   },
   createBtnText: {
@@ -228,7 +228,7 @@ const styles = StyleSheet.create({
   },
   empty: {
     fontSize: 14,
-    color: '#888',
+    color: '#9a9a9a',
     marginTop: 4,
   },
   authorRow: {
@@ -237,13 +237,13 @@ const styles = StyleSheet.create({
     gap: 12,
     paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
+    borderBottomColor: '#333333',
   },
   authorIcon: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: '#111',
+    backgroundColor: '#2b2b2b',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -265,17 +265,17 @@ const styles = StyleSheet.create({
   authorName: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#111',
+    color: '#ffffff',
   },
   authorBio: {
     fontSize: 12,
-    color: '#666',
+    color: '#9a9a9a',
     marginTop: 2,
     lineHeight: 17,
   },
   authorMeta: {
     fontSize: 12,
-    color: '#888',
+    color: '#9a9a9a',
     marginTop: 2,
   },
 });

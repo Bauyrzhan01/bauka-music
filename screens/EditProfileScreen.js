@@ -10,7 +10,7 @@ export default function EditProfileScreen({ onBack }) {
     <View style={styles.container}>
       <View style={styles.header}>
         <Pressable onPress={onBack} style={styles.backBtn}>
-          <Ionicons name="chevron-back" size={24} color="#111" />
+          <Ionicons name="chevron-back" size={24} color="#ffffff" />
         </Pressable>
         <Text style={styles.title}>Редактирование профиля</Text>
         <View style={styles.headerSpacer} />
@@ -33,7 +33,7 @@ export default function EditProfileScreen({ onBack }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#000000',
   },
   header: {
     flexDirection: 'row',
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     paddingVertical: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#eee',
+    borderBottomColor: '#333333',
   },
   backBtn: {
     width: 40,
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 17,
     fontWeight: '700',
-    color: '#111',
+    color: '#ffffff',
     textAlign: 'center',
   },
   headerSpacer: {
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
   },
   hint: {
     fontSize: 13,
-    color: '#666',
+    color: '#9a9a9a',
     lineHeight: 19,
     marginBottom: 4,
   },

@@ -80,7 +80,6 @@ export default function PlayerAuthorSection({
 
   const authorAvatarUri = resolveAuthorAvatarUrl(author);
   const initial = (author?.name || '?').charAt(0).toUpperCase();
-  const avatarKey = `${baseTrack.id}-${authorId || 'none'}-${authorAvatarUri || initial}`;
 
   const openProfile = () => {
     if (!authorId || !onOpenAuthorProfile) return;
@@ -120,16 +119,14 @@ export default function PlayerAuthorSection({
         >
           {authorAvatarUri ? (
             <Image
-              key={avatarKey}
               source={{ uri: authorAvatarUri }}
               style={[styles.avatar, { borderColor: avatarBorder }]}
               contentFit="cover"
               cachePolicy="memory-disk"
-              recyclingKey={avatarKey}
+              transition={0}
             />
           ) : (
             <View
-              key={avatarKey}
               style={[
                 styles.avatar,
                 { backgroundColor: avatarBg, borderColor: avatarBorder },
@@ -140,7 +137,7 @@ export default function PlayerAuthorSection({
           )}
 
           <View style={styles.info}>
-            <Text style={[styles.name, { color: textColor }]} numberOfLines={1}>
+            <Text style={[styles.name, { color: textColor }]}>
               {author.name || baseTrack?.artist || 'Автор'}
             </Text>
             {author?.bio ? (
@@ -178,7 +175,7 @@ const styles = StyleSheet.create({
     marginTop: 16,
     paddingTop: 16,
     borderTopWidth: 1,
-    borderTopColor: '#eee',
+    borderTopColor: '#333333',
   },
   sectionTitle: {
     fontSize: 14,
@@ -190,7 +187,7 @@ const styles = StyleSheet.create({
   },
   card: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     gap: 12,
     padding: 12,
     borderRadius: 14,
@@ -199,10 +196,11 @@ const styles = StyleSheet.create({
   avatar: {
     width: 52,
     height: 52,
-    borderRadius: 26,
-    borderWidth: 2,
+    borderRadius: 10,
+    borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    overflow: 'hidden',
   },
   avatarLetter: {
     color: '#fff',
@@ -217,6 +215,8 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 17,
     fontWeight: '700',
+    lineHeight: 22,
+    flexShrink: 1,
   },
   bio: {
     fontSize: 13,

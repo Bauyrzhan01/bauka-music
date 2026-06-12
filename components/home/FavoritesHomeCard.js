@@ -11,7 +11,7 @@ export default function FavoritesHomeCard({ onOpen }) {
     <View style={styles.container}>
       <Pressable style={styles.card} onPress={onOpen}>
         <View style={styles.iconWrap}>
-          <Ionicons name="heart" size={22} color="#111" />
+          <Ionicons name="heart" size={22} color="#ffffff" />
         </View>
         <View style={styles.textWrap}>
           <Text style={styles.title}>Избранное</Text>
@@ -23,7 +23,7 @@ export default function FavoritesHomeCard({ onOpen }) {
                 }`}
           </Text>
         </View>
-        <Ionicons name="chevron-forward" size={22} color="#999" />
+        <Ionicons name="chevron-forward" size={22} color="#888888" />
       </Pressable>
     </View>
   );
@@ -38,17 +38,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
-    backgroundColor: '#fff',
+    backgroundColor: '#000000',
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: '#eee',
+    borderColor: '#333333',
     padding: 14,
   },
   iconWrap: {
     width: 44,
     height: 44,
     borderRadius: 22,
-    backgroundColor: '#f0f0f0',
+    backgroundColor: '#2b2b2b',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -59,11 +59,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#111',
+    color: '#ffffff',
   },
   subtitle: {
     fontSize: 12,
-    color: '#888',
+    color: '#9a9a9a',
     marginTop: 2,
   },
 });

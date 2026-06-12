@@ -22,7 +22,7 @@ export default function PlayerAuthorPanel({
 
     if (!authorId) {
       setAuthor({
-        name: baseTrack?.artist || 'Bauka Music',
+        name: baseTrack?.artist || 'Tolqyn',
         bio: '',
       });
       setLoading(false);
@@ -118,19 +118,19 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 20,
     fontWeight: '700',
-    color: '#111',
+    color: '#ffffff',
     textAlign: 'center',
     marginBottom: 8,
   },
   bio: {
     fontSize: 14,
-    color: '#555',
+    color: '#9a9a9a',
     textAlign: 'center',
     lineHeight: 20,
   },
   bioMuted: {
     fontSize: 13,
-    color: '#999',
+    color: '#9a9a9a',
     textAlign: 'center',
   },
 });

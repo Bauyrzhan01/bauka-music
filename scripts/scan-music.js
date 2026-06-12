@@ -1,20 +1,68 @@
 const fs = require('fs');
 const path = require('path');
 
-const MUSIC_DIR = path.join(__dirname, '..', 'assets', 'music');
+const { MUSIC_DIR, AUDIO_EXT } = require('./musicPaths');
 const OUT_FILE = path.join(__dirname, '..', 'data', 'localTracks.generated.js');
 const AUTHORS_FILE = path.join(__dirname, '..', 'server', 'data', 'authors.json');
 const TRACKS_META_FILE = path.join(__dirname, '..', 'server', 'data', 'tracks-meta.json');
-const { coverExists, coverFilenameFor, extractAllCovers } = require('./extract-track-covers');
-const AUDIO_EXT = new Set(['.mp3', '.m4a', '.wav', '.aac']);
+const {
+  COVERS_DIR,
+  coverExists,
+  coverFilenameFor,
+  extractAllCovers,
+} = require('./extract-track-covers');
+
+const BUNDLED_COVERS_DIR = path.join(__dirname, '..', 'assets', 'covers');
+
+function capitalizeWords(text) {
+  return text.replace(/\b\w/g, (char) => char.toUpperCase());
+}
 
 function formatTitle(filename) {
   const base = path.basename(filename, path.extname(filename));
-  return base
-    .replace(/[-_]+/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim()
-    .replace(/\b\w/g, (char) => char.toUpperCase());
+  return capitalizeWords(
+    base
+      .replace(/[-_]+/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim()
+  );
+}
+
+/** Artist_-_Title_12345.mp3 → { artist, title } */
+function parseFilename(filename) {
+  const base = path.basename(filename, path.extname(filename));
+  const match = base.match(/^(.+?)_-_(.+)$/);
+  if (!match) {
+    return { artist: '', title: formatTitle(filename) };
+  }
+
+  const artist = capitalizeWords(match[1].replace(/_/g, ' ').trim());
+  const title = capitalizeWords(
+    match[2]
+      .replace(/_/g, ' ')
+      .replace(/\s+\d{5,}$/, '')
+      .trim()
+  );
+
+  return { artist, title };
+}
+
+function syncBundledCovers(tracks) {
+  fs.mkdirSync(BUNDLED_COVERS_DIR, { recursive: true });
+  for (const name of fs.readdirSync(BUNDLED_COVERS_DIR)) {
+    if (name !== '.gitkeep') {
+      fs.unlinkSync(path.join(BUNDLED_COVERS_DIR, name));
+    }
+  }
+
+  for (const track of tracks) {
+    if (!track.coverFile) continue;
+    const src = path.join(COVERS_DIR, track.coverFile);
+    const dest = path.join(BUNDLED_COVERS_DIR, track.coverFile);
+    if (fs.existsSync(src)) {
+      fs.copyFileSync(src, dest);
+    }
+  }
 }
 
 function readAuthors() {
@@ -55,6 +103,7 @@ function buildTrackList(files = listMusicFiles()) {
   return files.map((file, index) => {
     const meta = metaMap[file] || {};
     const author = meta.authorId ? authorById[meta.authorId] : null;
+    const parsed = parseFilename(file);
 
     const coverFile =
       meta.coverFile ||
@@ -63,8 +112,8 @@ function buildTrackList(files = listMusicFiles()) {
     return {
       id: meta.id || `local-${index}`,
       filename: file,
-      title: meta.title || formatTitle(file),
-      artist: author?.name || meta.artistName || '',
+      title: meta.title || parsed.title || formatTitle(file),
+      artist: author?.name || meta.artistName || parsed.artist || '',
       authorId: meta.authorId || null,
       description: meta.description || '',
       lyricsTimings: Array.isArray(meta.lyricsTimings) ? meta.lyricsTimings : [],
@@ -78,9 +127,13 @@ async function scanMusic() {
   const files = listMusicFiles();
   await extractAllCovers(files);
   const tracks = buildTrackList(files);
+  syncBundledCovers(tracks);
 
   const entries = tracks.map((track) => {
     const safePath = track.filename.replace(/\\/g, '/');
+    const coverLine = track.coverFile
+      ? `\n    cover: require('../assets/covers/${track.coverFile.replace(/\\/g, '/')}'),`
+      : '';
     return `  {
     id: ${JSON.stringify(track.id)},
     title: ${JSON.stringify(track.title)},
@@ -90,8 +143,8 @@ async function scanMusic() {
     lyricsTimings: ${JSON.stringify(track.lyricsTimings || [])},
     clipUrl: ${JSON.stringify(track.clipUrl || '')},
     filename: ${JSON.stringify(track.filename)},
-    coverFile: ${JSON.stringify(track.coverFile || null)},
-    file: require('../assets/music/${safePath}'),
+    coverFile: ${JSON.stringify(track.coverFile || null)},${coverLine}
+    file: require('../music/${safePath}'),
   }`;
   });
 

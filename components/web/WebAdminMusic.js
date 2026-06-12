@@ -123,7 +123,7 @@ export default function WebAdminMusic({ onOpenAuthor }) {
   const handleDelete = async (track) => {
     const ok = await confirmAction({
       title: 'Удалить трек?',
-      message: `${track.title}\nФайл будет удалён из assets/music/`,
+      message: `${track.title}\nФайл будет удалён из music/`,
       confirmText: 'Удалить',
       destructive: true,
     });

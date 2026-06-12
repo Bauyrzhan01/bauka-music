@@ -3,7 +3,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useMyLibrary } from '../../context/MyLibraryContext';
 
 const MATERIALS = [
-  { icon: 'musical-notes', label: 'MP3', color: '#111' },
+  { icon: 'musical-notes', label: 'MP3', color: '#ffffff' },
   { icon: 'image', label: 'Обложка', color: '#7c3aed' },
   { icon: 'document-text', label: 'Текст', color: '#2563eb' },
   { icon: 'link', label: 'Клип', color: '#dc2626' },
@@ -103,11 +103,11 @@ export default function HomeAddMusicSection({ onEditTrack, onOpenMyMusic }) {
             onPress={handleImport}
             disabled={busy}
           >
-            <Ionicons name="download-outline" size={18} color="#111" />
+            <Ionicons name="download-outline" size={18} color="#ffffff" />
             <Text style={styles.secondaryBtnText}>Импорт ZIP</Text>
           </Pressable>
           <Pressable style={styles.secondaryBtn} onPress={onOpenMyMusic}>
-            <Ionicons name="folder-open-outline" size={18} color="#111" />
+            <Ionicons name="folder-open-outline" size={18} color="#ffffff" />
             <Text style={styles.secondaryBtnText}>Моя музыка</Text>
           </Pressable>
         </View>
@@ -124,19 +124,19 @@ const styles = StyleSheet.create({
   panel: {
     borderRadius: 14,
     borderWidth: 1,
-    borderColor: '#e5e5e5',
-    backgroundColor: '#fafafa',
+    borderColor: '#333333',
+    backgroundColor: '#1a1a1a',
     padding: 16,
   },
   title: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#111',
+    color: '#ffffff',
   },
   subtitle: {
     marginTop: 4,
     fontSize: 13,
-    color: '#666',
+    color: '#9a9a9a',
     lineHeight: 18,
   },
   materials: {
@@ -153,9 +153,9 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     paddingHorizontal: 10,
     borderRadius: 20,
-    backgroundColor: '#fff',
+    backgroundColor: '#000000',
     borderWidth: 1,
-    borderColor: '#eee',
+    borderColor: '#333333',
   },
   materialIcon: {
     width: 22,
@@ -167,14 +167,14 @@ const styles = StyleSheet.create({
   materialLabel: {
     fontSize: 12,
     fontWeight: '600',
-    color: '#333',
+    color: '#9a9a9a',
   },
   primaryBtn: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
-    backgroundColor: '#111',
+    backgroundColor: '#2b2b2b',
     paddingVertical: 14,
     borderRadius: 12,
   },
@@ -196,14 +196,14 @@ const styles = StyleSheet.create({
     gap: 6,
     paddingVertical: 12,
     borderRadius: 12,
-    backgroundColor: '#fff',
+    backgroundColor: '#000000',
     borderWidth: 1,
-    borderColor: '#e5e5e5',
+    borderColor: '#333333',
   },
   secondaryBtnText: {
     fontSize: 13,
     fontWeight: '600',
-    color: '#111',
+    color: '#ffffff',
   },
   btnDisabled: {
     opacity: 0.65,

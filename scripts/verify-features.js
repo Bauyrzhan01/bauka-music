@@ -238,7 +238,7 @@ async function checkScan() {
 }
 
 async function main() {
-  console.log('Bauka Music — verify features\n');
+  console.log('Tolqyn — verify features\n');
 
   await checkScan();
   checkUtils();

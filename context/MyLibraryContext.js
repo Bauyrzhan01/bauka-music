@@ -12,6 +12,10 @@ import {
   saveMyLibraryEntries,
 } from '../storage/myLibraryStorage';
 import {
+  loadTrackReelsMap,
+  saveTrackReelsMap,
+} from '../storage/trackReelsStorage';
+import {
   deleteLibraryFile,
   importAudioToLibrary,
   importCoverToLibrary,
@@ -55,11 +59,13 @@ function createEntry(partial) {
 
 export function MyLibraryProvider({ children }) {
   const [entries, setEntries] = useState([]);
+  const [trackReelsMap, setTrackReelsMap] = useState({});
   const [ready, setReady] = useState(false);
   const [busy, setBusy] = useState(false);
 
   const hydrate = useCallback(async () => {
     const saved = await loadMyLibraryEntries();
+    const savedReels = await loadTrackReelsMap();
     const verified = [];
 
     for (const entry of saved) {
@@ -87,7 +93,32 @@ export function MyLibraryProvider({ children }) {
       await saveMyLibraryEntries(verified);
     }
 
+    const verifiedReels = {};
+    let reelsChanged = false;
+
+    for (const [trackId, videos] of Object.entries(savedReels)) {
+      const kept = [];
+      for (const video of videos || []) {
+        if (await verifyLibraryFile(video.uri)) {
+          kept.push(video);
+        } else {
+          await deleteLibraryFile(video.uri);
+          reelsChanged = true;
+        }
+      }
+      if (kept.length) {
+        verifiedReels[trackId] = kept;
+      } else if ((videos || []).length) {
+        reelsChanged = true;
+      }
+    }
+
+    if (reelsChanged) {
+      await saveTrackReelsMap(verifiedReels);
+    }
+
     setEntries(verified);
+    setTrackReelsMap(verifiedReels);
     setReady(true);
 
     const needsAutomation = verified.some(
@@ -296,6 +327,75 @@ export function MyLibraryProvider({ children }) {
     [entries]
   );
 
+  const getVideosForTrack = useCallback(
+    (trackId) => {
+      if (!trackId) return [];
+      const entry = entries.find((item) => item.id === trackId);
+      const fromEntry = entry?.videos || [];
+      const fromStore = trackReelsMap[trackId] || [];
+      const seen = new Set();
+      return [...fromEntry, ...fromStore].filter((video) => {
+        if (!video?.id || seen.has(video.id)) return false;
+        seen.add(video.id);
+        return true;
+      });
+    },
+    [entries, trackReelsMap]
+  );
+
+  const addVideoToTrack = useCallback(
+    async (trackId) => {
+      if (!trackId) return { ok: false, error: 'Трек не найден' };
+
+      const result = await DocumentPicker.getDocumentAsync({
+        type: ['video/*'],
+        copyToCacheDirectory: true,
+        multiple: false,
+      });
+
+      if (result.canceled || !result.assets?.length) {
+        return { ok: false, cancelled: true };
+      }
+
+      setBusy(true);
+      try {
+        const asset = result.assets[0];
+        const imported = await importVideoToLibrary(
+          asset.uri,
+          asset.name,
+          trackId
+        );
+        const video = {
+          id: imported.videoId,
+          title: titleFromFileName(asset.name),
+          uri: imported.uri,
+          createdAt: new Date().toISOString(),
+        };
+
+        const entry = entries.find((item) => item.id === trackId);
+        if (entry) {
+          await updateEntry(trackId, {
+            videos: [...(entry.videos || []), video],
+          });
+          return { ok: true, video };
+        }
+
+        const nextMap = {
+          ...trackReelsMap,
+          [trackId]: [video, ...(trackReelsMap[trackId] || [])],
+        };
+        setTrackReelsMap(nextMap);
+        await saveTrackReelsMap(nextMap);
+        return { ok: true, video };
+      } catch (error) {
+        return { ok: false, error: error.message || 'Не удалось добавить видео' };
+      } finally {
+        setBusy(false);
+      }
+    },
+    [entries, trackReelsMap, updateEntry]
+  );
+
   const setCoverForEntry = useCallback(
     async (id) => {
       const entry = entries.find((item) => item.id === id);
@@ -449,6 +549,7 @@ export function MyLibraryProvider({ children }) {
     <MyLibraryContext.Provider
       value={{
         entries,
+        trackReelsMap,
         catalogTracks,
         ready,
         busy,
@@ -457,6 +558,8 @@ export function MyLibraryProvider({ children }) {
         updateEntry,
         autoSyncKaraoke,
         addVideoToEntry,
+        addVideoToTrack,
+        getVideosForTrack,
         removeVideoFromEntry,
         deleteEntry,
         getEntryById,

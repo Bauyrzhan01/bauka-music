@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import BottomTabBar from '../components/BottomTabBar';
+import DockTabBar from '../components/navigation/DockTabBar';
 import MiniPlayer from '../components/player/MiniPlayer';
 import MainScreen from '../screens/MainScreen';
 import SearchScreen from '../screens/SearchScreen';
@@ -13,6 +13,7 @@ import UserReelsProfileScreen from '../screens/UserReelsProfileScreen';
 import FavoritesScreen from '../screens/FavoritesScreen';
 import AlbumsScreen from '../screens/AlbumsScreen';
 import MyMusicScreen from '../screens/MyMusicScreen';
+import SettingsScreen from '../screens/SettingsScreen';
 import EditLocalTrackScreen from '../screens/EditLocalTrackScreen';
 import LocalKaraokeScreen from '../screens/LocalKaraokeScreen';
 import { ReelsNavProvider } from '../context/ReelsNavContext';
@@ -26,6 +27,7 @@ export default function AppTabs() {
   const [albumsOverlay, setAlbumsOverlay] = useState(false);
   const [userOverlay, setUserOverlay] = useState(null);
   const [myMusicOverlay, setMyMusicOverlay] = useState(false);
+  const [settingsOverlay, setSettingsOverlay] = useState(false);
   const [editTrackId, setEditTrackId] = useState(null);
   const [karaokeTrackId, setKaraokeTrackId] = useState(null);
   const [tabFocusKey, setTabFocusKey] = useState(0);
@@ -37,6 +39,7 @@ export default function AppTabs() {
     setAlbumsOverlay(false);
     setUserOverlay(null);
     setMyMusicOverlay(false);
+    setSettingsOverlay(false);
     setEditTrackId(null);
     setKaraokeTrackId(null);
   };
@@ -51,38 +54,74 @@ export default function AppTabs() {
     setEditTrackId(id);
   };
 
+  const closeFavorites = () => {
+    setFavoritesOverlay(false);
+    setActiveTab('Main');
+  };
+
+  const closeMyMusic = () => {
+    setMyMusicOverlay(false);
+    setActiveTab('Main');
+  };
+
+  const closeSettings = () => {
+    setSettingsOverlay(false);
+    setActiveTab('Profile');
+  };
+
+  const openSettings = () => {
+    clearAllOverlays();
+    setSettingsOverlay(true);
+    setActiveTab('Settings');
+  };
+
   const handleNavigate = (tab, preset) => {
     if (tab === 'Favorites') {
-      setAlbumsOverlay(false);
+      clearAllOverlays();
       setFavoritesOverlay(true);
+      setActiveTab('Favorites');
       return;
     }
     if (tab === 'Albums') {
-      setFavoritesOverlay(false);
-      setMyMusicOverlay(false);
+      clearAllOverlays();
       setAlbumsOverlay(true);
+      setActiveTab('Main');
       return;
     }
     if (tab === 'MyMusic') {
-      setFavoritesOverlay(false);
-      setAlbumsOverlay(false);
-      setEditTrackId(null);
+      clearAllOverlays();
       setMyMusicOverlay(true);
+      setActiveTab('MyMusic');
       return;
     }
     if (tab === 'Author' && preset?.authorId) {
       setFavoritesOverlay(false);
+      setAlbumsOverlay(false);
+      setMyMusicOverlay(false);
       setUserOverlay(null);
       setAuthorOverlay(preset);
+      return;
+    }
+    if (tab === 'Search') {
+      clearAllOverlays();
+      if (preset) {
+        setSearchPreset(preset);
+      }
+      setActiveTab('Search');
       return;
     }
     if (preset) {
       setSearchPreset(preset);
     }
+    clearAllOverlays();
     setActiveTab(tab);
   };
 
-  const openFavorites = () => setFavoritesOverlay(true);
+  const openFavorites = () => {
+    clearAllOverlays();
+    setFavoritesOverlay(true);
+    setActiveTab('Favorites');
+  };
 
   const openUserReelsProfile = (user) => {
     setFavoritesOverlay(false);
@@ -92,10 +131,44 @@ export default function AppTabs() {
   };
 
   const handleTabPress = (tab) => {
-    clearAllOverlays();
-    if (tab !== 'Search') {
-      setSearchPreset(null);
+    if (tab === 'MyMusic') {
+      if (myMusicOverlay && activeTab === 'MyMusic') {
+        closeMyMusic();
+        return;
+      }
+      clearAllOverlays();
+      setMyMusicOverlay(true);
+      setActiveTab('MyMusic');
+      return;
     }
+    if (tab === 'Favorites') {
+      if (favoritesOverlay && activeTab === 'Favorites') {
+        closeFavorites();
+        return;
+      }
+      clearAllOverlays();
+      setFavoritesOverlay(true);
+      setActiveTab('Favorites');
+      return;
+    }
+    if (tab === 'Main') {
+      const onMain =
+        activeTab === 'Main' &&
+        !favoritesOverlay &&
+        !myMusicOverlay &&
+        !albumsOverlay &&
+        !authorOverlay &&
+        !userOverlay &&
+        !editTrackId &&
+        !karaokeTrackId;
+      if (onMain) return;
+      clearAllOverlays();
+      setSearchPreset(null);
+      setActiveTab('Main');
+      return;
+    }
+    clearAllOverlays();
+    setSearchPreset(null);
     setTabFocusKey((key) => key + 1);
     setActiveTab(tab);
   };
@@ -115,6 +188,10 @@ export default function AppTabs() {
         <SearchScreen
           searchPreset={searchPreset}
           onClearPreset={() => setSearchPreset(null)}
+          onBack={() => {
+            setSearchPreset(null);
+            setActiveTab('Main');
+          }}
         />
       </View>
       <View
@@ -124,16 +201,9 @@ export default function AppTabs() {
         <ProfileScreen
           tabFocusKey={tabFocusKey}
           onOpenFavorites={openFavorites}
+          onOpenSettings={openSettings}
           onNavigate={handleNavigate}
           onOpenMyMusic={() => handleNavigate('MyMusic')}
-          onEditTrack={(id) => {
-            setMyMusicOverlay(false);
-            openEditTrack(id);
-          }}
-          onOpenKaraoke={(id) => {
-            setMyMusicOverlay(false);
-            openKaraoke(id);
-          }}
         />
       </View>
     </>
@@ -157,12 +227,25 @@ export default function AppTabs() {
             />
           ) : myMusicOverlay ? (
             <MyMusicScreen
-              onBack={() => setMyMusicOverlay(false)}
+              onBack={closeMyMusic}
               onEditTrack={(id) => openEditTrack(id)}
               onOpenKaraoke={(id) => openKaraoke(id)}
             />
           ) : favoritesOverlay ? (
-            <FavoritesScreen onBack={() => setFavoritesOverlay(false)} />
+            <FavoritesScreen onBack={closeFavorites} />
+          ) : settingsOverlay ? (
+            <SettingsScreen
+              onBack={closeSettings}
+              onNavigate={handleNavigate}
+              onEditTrack={(id) => {
+                setSettingsOverlay(false);
+                openEditTrack(id);
+              }}
+              onOpenKaraoke={(id) => {
+                setSettingsOverlay(false);
+                openKaraoke(id);
+              }}
+            />
           ) : albumsOverlay ? (
             <AlbumsScreen
               onBack={() => setAlbumsOverlay(false)}
@@ -193,7 +276,9 @@ export default function AppTabs() {
       {currentTrack ? <MiniPlayer /> : null}
 
       <SafeAreaView edges={['bottom']} style={styles.tabBarWrap}>
-        <BottomTabBar activeTab={activeTab} onTabPress={handleTabPress} />
+        <View style={styles.tabBarFull}>
+          <DockTabBar activeTab={activeTab} onTabPress={handleTabPress} />
+        </View>
       </SafeAreaView>
 
         <PlayerScreen
@@ -210,13 +295,19 @@ export default function AppTabs() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#000',
   },
   screen: {
     flex: 1,
+    backgroundColor: '#000',
   },
   tabBarWrap: {
-    backgroundColor: '#fff',
+    backgroundColor: 'transparent',
+    width: '100%',
+  },
+  tabBarFull: {
+    width: '100%',
+    alignSelf: 'stretch',
   },
   tabPage: {
     flex: 1,

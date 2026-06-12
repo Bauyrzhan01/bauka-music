@@ -9,7 +9,6 @@ const STALE_ACCENTS = new Set(['#333333', '#000000', '#111111']);
 export default function ProfileHeader({
   name,
   email,
-  reelsCount = 0,
   onEditProfile,
 }) {
   const { user, updateAvatar } = useAuth();
@@ -57,15 +56,8 @@ export default function ProfileHeader({
           {user.bio}
         </Text>
       ) : null}
-      <Text style={styles.avatarHint}>
-        {onEditProfile
-          ? 'Нажмите, чтобы редактировать профиль'
-          : 'Нажмите на фото, чтобы сменить аватар'}
-      </Text>
-      {reelsCount > 0 ? (
-        <View style={styles.badge}>
-          <Text style={styles.badgeText}>{reelsCount} Reels</Text>
-        </View>
+      {onEditProfile ? (
+        <Text style={styles.avatarHint}>Нажмите, чтобы изменить</Text>
       ) : null}
     </>
   );
@@ -91,34 +83,22 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 22,
     fontWeight: '700',
-    color: '#111',
+    color: '#ffffff',
   },
   email: {
     fontSize: 14,
-    color: '#666',
+    color: '#9a9a9a',
   },
   bio: {
     fontSize: 14,
-    color: '#666',
+    color: '#9a9a9a',
     textAlign: 'center',
     paddingHorizontal: 32,
     lineHeight: 20,
   },
   avatarHint: {
     fontSize: 12,
-    color: '#999',
+    color: 'rgba(255,255,255,0.45)',
     marginTop: 2,
-  },
-  badge: {
-    marginTop: 4,
-    paddingHorizontal: 12,
-    paddingVertical: 4,
-    borderRadius: 20,
-    backgroundColor: '#f0f0f0',
-  },
-  badgeText: {
-    fontSize: 12,
-    fontWeight: '600',
-    color: '#444',
   },
 });

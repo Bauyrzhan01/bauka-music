@@ -34,7 +34,7 @@ export default function ProfileInfoFields() {
   return (
     <View style={styles.card}>
       <View style={styles.cardHeader}>
-        <Ionicons name="person-outline" size={20} color="#111" />
+        <Ionicons name="person-outline" size={20} color="#ffffff" />
         <Text style={styles.cardTitle}>Данные профиля</Text>
       </View>
 
@@ -95,8 +95,8 @@ const styles = StyleSheet.create({
     gap: 16,
     borderRadius: 16,
     borderWidth: 1,
-    borderColor: '#eee',
-    backgroundColor: '#fff',
+    borderColor: '#333333',
+    backgroundColor: '#000000',
   },
   cardHeader: {
     flexDirection: 'row',
@@ -106,14 +106,14 @@ const styles = StyleSheet.create({
   cardTitle: {
     fontSize: 17,
     fontWeight: '700',
-    color: '#111',
+    color: '#ffffff',
   },
   saveBtn: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
-    backgroundColor: '#111',
+    backgroundColor: '#2b2b2b',
     borderRadius: 12,
     paddingVertical: 14,
   },

@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import Animated, {
   Easing,
   useAnimatedStyle,
@@ -9,8 +10,9 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import MusicEqualizer from '../player/MusicEqualizer';
+import MyWaveShaderBackground from './MyWaveShaderBackground';
 
-function FloatingOrb({ size, left, top, dx, dy, duration, opacity }) {
+function FloatingOrb({ size, left, top, dx, dy, duration, opacity, color = '#fff' }) {
   const offsetX = useSharedValue(0);
   const offsetY = useSharedValue(0);
   const pulse = useSharedValue(1);
@@ -40,8 +42,8 @@ function FloatingOrb({ size, left, top, dx, dy, duration, opacity }) {
     );
     pulse.value = withRepeat(
       withSequence(
-        withTiming(1.12, { duration: duration * 0.9, easing: Easing.inOut(Easing.ease) }),
-        withTiming(0.92, { duration: duration * 0.9, easing: Easing.inOut(Easing.ease) })
+        withTiming(1.1, { duration: duration * 0.9, easing: Easing.inOut(Easing.ease) }),
+        withTiming(0.94, { duration: duration * 0.9, easing: Easing.inOut(Easing.ease) })
       ),
       -1,
       true
@@ -68,13 +70,35 @@ function FloatingOrb({ size, left, top, dx, dy, duration, opacity }) {
           left,
           top,
           opacity,
+          backgroundColor: color,
         },
       ]}
     />
   );
 }
 
-export default function MyWaveVisuals({ isPlaying }) {
+export default function MyWaveVisuals({ isPlaying, variant = 'default' }) {
+  if (variant === 'yandex') {
+    return (
+      <View style={styles.wrap} pointerEvents="none">
+        <View style={styles.shaderInset}>
+          <MyWaveShaderBackground isPlaying={isPlaying} />
+        </View>
+
+        <LinearGradient
+          colors={[
+            'transparent',
+            'transparent',
+            'rgba(0,0,0,0.35)',
+            'rgba(0,0,0,0.65)',
+          ]}
+          locations={[0, 0.55, 0.8, 1]}
+          style={styles.shaderInset}
+        />
+      </View>
+    );
+  }
+
   return (
     <View style={styles.wrap} pointerEvents="none">
       <FloatingOrb
@@ -122,10 +146,19 @@ const styles = StyleSheet.create({
   wrap: {
     ...StyleSheet.absoluteFillObject,
     overflow: 'hidden',
+    backgroundColor: 'transparent',
+  },
+  shaderInset: {
+    position: 'absolute',
+    top: 14,
+    left: 14,
+    right: 14,
+    bottom: 14,
+    borderRadius: 18,
+    overflow: 'hidden',
   },
   orb: {
     position: 'absolute',
-    backgroundColor: '#fff',
   },
   eqStrip: {
     position: 'absolute',

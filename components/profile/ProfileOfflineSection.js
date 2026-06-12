@@ -11,7 +11,7 @@ export default function ProfileOfflineSection() {
   if (!offlineTracks.length) {
     return (
       <View style={styles.emptyWrap}>
-        <Ionicons name="cloud-download-outline" size={20} color="#999" />
+        <Ionicons name="cloud-download-outline" size={20} color="#888888" />
         <Text style={styles.emptyTitle}>Скачанные треки</Text>
         <Text style={styles.emptyText}>
           В плеере нажмите ↓ на обложке — трек будет доступен без сети
@@ -25,7 +25,7 @@ export default function ProfileOfflineSection() {
   return (
     <View style={styles.wrap}>
       <View style={styles.header}>
-        <Ionicons name="cloud-done-outline" size={18} color="#111" />
+        <Ionicons name="cloud-done-outline" size={18} color="#ffffff" />
         <Text style={styles.title}>Скачанные</Text>
         <Text style={styles.count}>{offlineTracks.length}</Text>
       </View>
@@ -47,7 +47,7 @@ export default function ProfileOfflineSection() {
                   {track.title}
                 </Text>
                 <Text style={styles.trackArtist} numberOfLines={1}>
-                  {track.artist || 'Bauka Music'}
+                  {track.artist || 'Tolqyn'}
                 </Text>
               </View>
               <Ionicons name="cloud-done" size={18} color="#16a34a" />
@@ -74,18 +74,18 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 14,
     borderWidth: 1,
-    borderColor: '#eee',
-    backgroundColor: '#fafafa',
+    borderColor: '#333333',
+    backgroundColor: '#1a1a1a',
     gap: 6,
   },
   emptyTitle: {
     fontSize: 15,
     fontWeight: '700',
-    color: '#111',
+    color: '#ffffff',
   },
   emptyText: {
     fontSize: 13,
-    color: '#666',
+    color: '#9a9a9a',
     lineHeight: 18,
   },
   header: {
@@ -98,17 +98,17 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#111',
+    color: '#ffffff',
     flex: 1,
   },
   count: {
     fontSize: 14,
-    color: '#888',
+    color: '#9a9a9a',
     fontWeight: '600',
   },
   list: {
     borderTopWidth: 1,
-    borderTopColor: '#eee',
+    borderTopColor: '#333333',
   },
   row: {
     flexDirection: 'row',
@@ -117,10 +117,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#eee',
+    borderBottomColor: '#333333',
   },
   rowActive: {
-    backgroundColor: '#f7f7f7',
+    backgroundColor: '#1a1a1a',
   },
   rowText: {
     flex: 1,
@@ -129,16 +129,16 @@ const styles = StyleSheet.create({
   trackTitle: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#111',
+    color: '#ffffff',
   },
   trackArtist: {
     fontSize: 12,
-    color: '#666',
+    color: '#9a9a9a',
     marginTop: 2,
   },
   more: {
     fontSize: 12,
-    color: '#888',
+    color: '#9a9a9a',
     paddingHorizontal: 16,
     paddingTop: 8,
   },

@@ -1,8 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const { parseFile } = require('music-metadata');
-const MUSIC_DIR = path.join(__dirname, '..', 'assets', 'music');
-const AUDIO_EXT = new Set(['.mp3', '.m4a', '.wav', '.aac']);
+const { MUSIC_DIR, AUDIO_EXT } = require('./musicPaths');
 
 const COVERS_DIR = path.join(__dirname, '..', 'server', 'uploads', 'covers');
 

@@ -13,7 +13,7 @@ function run(command, args, inherit = true) {
 }
 
 function main() {
-  console.log('[ios] Bauka Music — установка на iPhone\n');
+  console.log('[ios] Tolqyn — установка на iPhone\n');
   console.log('  На Windows нет Xcode — сборка идёт в облаке Expo (EAS).');
   console.log('  Нужны: аккаунт Expo и Apple Developer ($99/год).\n');
 

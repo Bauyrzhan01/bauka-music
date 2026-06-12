@@ -60,7 +60,7 @@ export default function AdminBannerFormScreen({ banner, onBack, embedded }) {
           </Pressable>
         ) : (
           <Pressable onPress={onBack}>
-            <Ionicons name="arrow-back" size={24} color="#000" />
+            <Ionicons name="arrow-back" size={24} color="#ffffff" />
           </Pressable>
         )}
         <Text style={styles.title}>
@@ -82,7 +82,7 @@ export default function AdminBannerFormScreen({ banner, onBack, embedded }) {
           />
         ) : (
           <View style={styles.previewPlaceholder}>
-            <Ionicons name="image-outline" size={40} color="#999" />
+            <Ionicons name="image-outline" size={40} color="#888888" />
             <Text style={styles.placeholderText}>Фото баннера</Text>
           </View>
         )}
@@ -103,14 +103,14 @@ export default function AdminBannerFormScreen({ banner, onBack, embedded }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#000000',
   },
   embedded: {
     backgroundColor: 'transparent',
   },
   cancelLink: {
     fontSize: 14,
-    color: '#111',
+    color: '#ffffff',
     fontWeight: '600',
   },
   header: {
@@ -147,13 +147,13 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 160,
     borderRadius: 12,
-    backgroundColor: '#f0f0f0',
+    backgroundColor: '#2b2b2b',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
   },
   placeholderText: {
-    color: '#999',
+    color: '#9a9a9a',
   },
   error: {
     color: '#c00',

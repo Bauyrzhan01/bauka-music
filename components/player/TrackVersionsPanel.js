@@ -26,13 +26,19 @@ function mapLocalVideos(entry, user) {
     title: video.title,
     localUri: video.uri,
     mediaUrl: video.uri,
+    baseTrackId: entry.id,
+    trackTitle: entry.title,
     userName: user?.name || 'Я',
     userEmail: null,
     createdAt: video.createdAt,
   }));
 }
 
-export default function TrackVersionsPanel({ baseTrack, playerTheme }) {
+export default function TrackVersionsPanel({
+  baseTrack,
+  playerTheme,
+  onReelsStateChange,
+}) {
   const { user } = useAuth();
   const { getEntryById, addVideoToEntry, entries } = useMyLibrary();
   const { currentTrack, playUserVersion } = usePlayer();
@@ -103,7 +109,17 @@ export default function TrackVersionsPanel({ baseTrack, playerTheme }) {
     if (index < 0) return;
     setReelsStartIndex(index);
     setActiveReelId(version.id);
+    if (onReelsStateChange) {
+      onReelsStateChange({ visible: true, items: list, initialIndex: index });
+      return;
+    }
     setReelsVisible(true);
+  };
+
+  const closeReels = () => {
+    setReelsVisible(false);
+    setActiveReelId(null);
+    onReelsStateChange?.(null);
   };
 
   const canAddOnline =
@@ -246,9 +262,9 @@ export default function TrackVersionsPanel({ baseTrack, playerTheme }) {
                         suspended={reelsVisible}
                       />
                       <View style={styles.reelMeta}>
-                        {displayContentTitle(item.title) ? (
-                          <Text style={styles.reelTitle} numberOfLines={2}>
-                            {displayContentTitle(item.title)}
+                        {baseTrack?.title ? (
+                          <Text style={styles.reelTrack} numberOfLines={1}>
+                            {baseTrack.title}
                           </Text>
                         ) : null}
                         <ContentAuthorRow
@@ -336,17 +352,17 @@ export default function TrackVersionsPanel({ baseTrack, playerTheme }) {
         </>
       )}
 
-      <ContentReelsViewer
-        visible={reelsVisible}
-        items={videoContents}
-        initialIndex={reelsStartIndex}
-        trackTitle={baseTrack.title}
-        currentUser={user}
-        onClose={() => {
-          setReelsVisible(false);
-          setActiveReelId(null);
-        }}
-      />
+      {onReelsStateChange ? null : (
+        <ContentReelsViewer
+          visible={reelsVisible}
+          items={videoContents}
+          initialIndex={reelsStartIndex}
+          baseTrack={baseTrack}
+          trackTitle={baseTrack.title}
+          currentUser={user}
+          onClose={closeReels}
+        />
+      )}
 
       <AddTrackVersionModal
         visible={showAdd}
@@ -390,13 +406,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 14,
     fontWeight: '700',
-    color: '#111',
+    color: '#ffffff',
   },
   addBtn: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
-    backgroundColor: '#111',
+    backgroundColor: '#2b2b2b',
     paddingHorizontal: 10,
     paddingVertical: 6,
     borderRadius: 8,
@@ -419,7 +435,7 @@ const styles = StyleSheet.create({
   },
   empty: {
     fontSize: 12,
-    color: '#888',
+    color: '#9a9a9a',
     lineHeight: 18,
     marginBottom: 4,
   },
@@ -429,7 +445,7 @@ const styles = StyleSheet.create({
   sectionLabel: {
     fontSize: 11,
     fontWeight: '700',
-    color: '#888',
+    color: '#9a9a9a',
     textTransform: 'uppercase',
     letterSpacing: 0.5,
     marginBottom: 8,
@@ -453,13 +469,14 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: 'rgba(0,0,0,0.55)',
   },
-  reelTitle: {
+  reelTrack: {
     color: '#fff',
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: '700',
+    marginBottom: 2,
   },
   reelAuthor: {
-    color: '#ccc',
+    color: '#666666',
     fontSize: 10,
     marginTop: 2,
   },
@@ -472,22 +489,22 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: '#e5e5e5',
-    backgroundColor: '#fafafa',
+    borderColor: '#333333',
+    backgroundColor: '#1a1a1a',
     gap: 6,
   },
   audioCardActive: {
     borderColor: '#111',
     borderWidth: 2,
-    backgroundColor: '#fff',
+    backgroundColor: '#000000',
   },
   audioTitle: {
     fontSize: 13,
     fontWeight: '600',
-    color: '#111',
+    color: '#ffffff',
   },
   audioAuthor: {
     fontSize: 11,
-    color: '#888',
+    color: '#9a9a9a',
   },
 });

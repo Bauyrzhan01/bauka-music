@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { View, Text, Pressable, StyleSheet } from 'react-native';
+import { View, Text, Pressable, StyleSheet, useWindowDimensions } from 'react-native';
 import Animated, {
   Easing,
   useAnimatedStyle,
@@ -29,7 +29,8 @@ export { HORIZONTAL_PADDING };
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
-export default function MyWaveSection() {
+export default function MyWaveSection({ dark = false }) {
+  const { height: screenHeight } = useWindowDimensions();
   const { user } = useAuth();
   const { catalogTracks } = useOffline();
   const { favoriteIds, ready: favoritesReady } = useFavorites();
@@ -165,6 +166,39 @@ export default function MyWaveSection() {
   const active = waveActive();
   const showPause = active && isPlaying;
 
+  const heroHeight = Math.min(Math.max(screenHeight * 0.54, 380), 520);
+
+  if (dark) {
+    return (
+      <View style={styles.heroWrap}>
+        <AnimatedPressable
+          style={[styles.heroCard, { height: heroHeight }, cardAnimStyle]}
+          onPress={handlePress}
+        >
+          <MyWaveVisuals isPlaying={isWavePlaying} variant="yandex" />
+
+          <View style={styles.heroContent}>
+            <View style={styles.heroTitleRow}>
+              <Ionicons name={showPause ? 'pause' : 'play'} size={28} color="#fff" />
+              <Text style={styles.heroTitle}>Моя волна</Text>
+            </View>
+
+            <Pressable
+              style={styles.tuneBtn}
+              onPress={(event) => {
+                event.stopPropagation?.();
+                handlePress();
+              }}
+            >
+              <Ionicons name="options-outline" size={16} color="#fff" />
+              <Text style={styles.tuneText}>Настроить</Text>
+            </Pressable>
+          </View>
+        </AnimatedPressable>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <AnimatedPressable
@@ -206,7 +240,7 @@ export default function MyWaveSection() {
           <Ionicons
             name={showPause ? 'pause' : 'play'}
             size={28}
-            color="#111"
+            color="#ffffff"
           />
         </AnimatedPressable>
       </AnimatedPressable>
@@ -215,6 +249,55 @@ export default function MyWaveSection() {
 }
 
 const styles = StyleSheet.create({
+  heroWrap: {
+    marginBottom: 12,
+    width: '100%',
+    alignSelf: 'stretch',
+    paddingTop: 4,
+  },
+  heroCard: {
+    backgroundColor: 'transparent',
+    overflow: 'hidden',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+  },
+  heroContent: {
+    zIndex: 2,
+    gap: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  heroTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 10,
+  },
+  heroTitle: {
+    fontSize: 32,
+    fontWeight: '800',
+    color: '#fff',
+    letterSpacing: -0.3,
+    textShadowColor: 'rgba(0,0,0,0.6)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 8,
+  },
+  tuneBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'center',
+    gap: 6,
+    backgroundColor: 'rgba(255,255,255,0.16)',
+    paddingHorizontal: 16,
+    paddingVertical: 9,
+    borderRadius: 22,
+  },
+  tuneText: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: '600',
+  },
   container: {
     marginTop: 8,
     paddingHorizontal: HORIZONTAL_PADDING,
@@ -222,7 +305,7 @@ const styles = StyleSheet.create({
   card: {
     height: 148,
     borderRadius: 14,
-    backgroundColor: '#111',
+    backgroundColor: '#2b2b2b',
     overflow: 'hidden',
     flexDirection: 'row',
     alignItems: 'center',
@@ -259,13 +342,13 @@ const styles = StyleSheet.create({
   },
   meta: {
     fontSize: 11,
-    color: '#888',
+    color: '#9a9a9a',
   },
   playBtn: {
     width: 56,
     height: 56,
     borderRadius: 28,
-    backgroundColor: '#fff',
+    backgroundColor: '#000000',
     alignItems: 'center',
     justifyContent: 'center',
     zIndex: 2,

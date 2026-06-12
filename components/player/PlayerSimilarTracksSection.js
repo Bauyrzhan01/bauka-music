@@ -68,12 +68,12 @@ const styles = StyleSheet.create({
     marginTop: 16,
     paddingTop: 16,
     borderTopWidth: 1,
-    borderTopColor: '#eee',
+    borderTopColor: '#333333',
   },
   title: {
     fontSize: 14,
     fontWeight: '700',
-    color: '#111',
+    color: '#ffffff',
     marginBottom: 10,
   },
   row: {

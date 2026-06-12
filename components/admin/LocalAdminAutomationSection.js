@@ -77,7 +77,7 @@ export default function LocalAdminAutomationSection() {
 function StatPill({ icon, label, value }) {
   return (
     <View style={styles.pill}>
-      <Ionicons name={icon} size={16} color="#444" />
+      <Ionicons name={icon} size={16} color="#9a9a9a" />
       <Text style={styles.pillValue}>{value}</Text>
       <Text style={styles.pillLabel}>{label}</Text>
     </View>
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
   },
   hint: {
     fontSize: 13,
-    color: '#666',
+    color: '#9a9a9a',
     lineHeight: 19,
   },
   statsRow: {
@@ -101,24 +101,24 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 12,
     borderRadius: 12,
-    backgroundColor: '#f4f4f5',
+    backgroundColor: '#2b2b2b',
     gap: 2,
   },
   pillValue: {
     fontSize: 20,
     fontWeight: '700',
-    color: '#111',
+    color: '#ffffff',
   },
   pillLabel: {
     fontSize: 11,
-    color: '#888',
+    color: '#9a9a9a',
   },
   runBtn: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
-    backgroundColor: '#111',
+    backgroundColor: '#2b2b2b',
     borderRadius: 14,
     paddingVertical: 14,
   },

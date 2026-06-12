@@ -93,7 +93,7 @@ export default function DeviceMusicPickerScreen({ onBack, onImport, busy }) {
     <View style={styles.container}>
       <View style={styles.topBar}>
         <Pressable onPress={onBack} style={styles.backBtn}>
-          <Ionicons name="chevron-back" size={24} color="#111" />
+          <Ionicons name="chevron-back" size={24} color="#ffffff" />
         </Pressable>
         <Text style={styles.topTitle}>Музыка телефона</Text>
         <View style={styles.topSpacer} />
@@ -101,7 +101,7 @@ export default function DeviceMusicPickerScreen({ onBack, onImport, busy }) {
 
       {loading ? (
         <View style={styles.center}>
-          <ActivityIndicator size="large" color="#111" />
+          <ActivityIndicator size="large" color="#ffffff" />
         </View>
       ) : error ? (
         <View style={styles.center}>
@@ -121,7 +121,7 @@ export default function DeviceMusicPickerScreen({ onBack, onImport, busy }) {
           }
           ListFooterComponent={
             loadingMore ? (
-              <ActivityIndicator style={styles.footerLoader} color="#111" />
+              <ActivityIndicator style={styles.footerLoader} color="#ffffff" />
             ) : null
           }
           renderItem={({ item }) => {
@@ -172,7 +172,7 @@ export default function DeviceMusicPickerScreen({ onBack, onImport, busy }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#000000',
   },
   topBar: {
     flexDirection: 'row',
@@ -208,10 +208,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
+    borderBottomColor: '#333333',
   },
   rowActive: {
-    backgroundColor: '#f8f8f8',
+    backgroundColor: '#1a1a1a',
   },
   rowText: {
     flex: 1,
@@ -220,20 +220,20 @@ const styles = StyleSheet.create({
   rowTitle: {
     fontSize: 15,
     fontWeight: '600',
-    color: '#111',
+    color: '#ffffff',
   },
   rowMeta: {
     fontSize: 12,
-    color: '#888',
+    color: '#9a9a9a',
     marginTop: 2,
   },
   footer: {
     padding: 16,
     borderTopWidth: 1,
-    borderTopColor: '#eee',
+    borderTopColor: '#333333',
   },
   importBtn: {
-    backgroundColor: '#111',
+    backgroundColor: '#2b2b2b',
     borderRadius: 12,
     paddingVertical: 14,
     alignItems: 'center',
@@ -254,7 +254,7 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     fontSize: 14,
-    color: '#888',
+    color: '#9a9a9a',
     textAlign: 'center',
   },
   footerLoader: {

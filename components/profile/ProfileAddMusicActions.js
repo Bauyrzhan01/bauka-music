@@ -34,7 +34,7 @@ export default function ProfileAddMusicActions({ onEditTrack, onOpenMyMusic }) {
         )}
       </Pressable>
       <Pressable style={styles.secondaryBtn} onPress={onOpenMyMusic}>
-        <Ionicons name="musical-notes-outline" size={18} color="#111" />
+        <Ionicons name="musical-notes-outline" size={18} color="#ffffff" />
         <Text style={styles.secondaryBtnText}>Моя музыка</Text>
       </Pressable>
     </View>
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: 6,
-    backgroundColor: '#111',
+    backgroundColor: '#2b2b2b',
     paddingVertical: 12,
     borderRadius: 12,
   },
@@ -72,13 +72,13 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: '#e5e5e5',
-    backgroundColor: '#fafafa',
+    borderColor: '#333333',
+    backgroundColor: '#1a1a1a',
   },
   secondaryBtnText: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#111',
+    color: '#ffffff',
   },
   btnDisabled: {
     opacity: 0.65,

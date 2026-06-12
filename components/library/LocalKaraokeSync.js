@@ -192,7 +192,7 @@ export default function LocalKaraokeSync({
           onPress={handleGoBack}
           disabled={syncIndex <= 0}
         >
-          <Ionicons name="arrow-undo" size={18} color="#111" />
+          <Ionicons name="arrow-undo" size={18} color="#ffffff" />
         </Pressable>
         <Pressable
           style={[styles.markBtn, syncIndex >= lines.length && styles.markBtnDone]}
@@ -261,14 +261,14 @@ const styles = StyleSheet.create({
     marginTop: 16,
     padding: 14,
     borderRadius: 14,
-    backgroundColor: '#f8f8f8',
+    backgroundColor: '#1a1a1a',
     borderWidth: 1,
     borderColor: '#ececec',
   },
   title: {
     fontSize: 15,
     fontWeight: '700',
-    color: '#111',
+    color: '#ffffff',
     marginBottom: 4,
   },
   hint: {
@@ -287,7 +287,7 @@ const styles = StyleSheet.create({
     width: 42,
     height: 42,
     borderRadius: 21,
-    backgroundColor: '#111',
+    backgroundColor: '#2b2b2b',
     alignItems: 'center',
     justifyContent: 'center',
     paddingLeft: 2,
@@ -296,7 +296,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 14,
     fontWeight: '600',
-    color: '#333',
+    color: '#9a9a9a',
     fontVariant: ['tabular-nums'],
   },
   backLineBtn: {
@@ -304,16 +304,16 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: '#333333',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: '#000000',
   },
   backLineBtnDisabled: {
     opacity: 0.35,
   },
   markBtn: {
-    backgroundColor: '#111',
+    backgroundColor: '#2b2b2b',
     paddingHorizontal: 14,
     paddingVertical: 10,
     borderRadius: 20,
@@ -336,12 +336,12 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: '#333333',
   },
   ghostBtnText: {
     fontSize: 13,
     fontWeight: '600',
-    color: '#555',
+    color: '#9a9a9a',
   },
   saveBtn: {
     flex: 1,
@@ -349,7 +349,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: 10,
     borderRadius: 10,
-    backgroundColor: '#111',
+    backgroundColor: '#2b2b2b',
   },
   saveBtnDisabled: {
     opacity: 0.45,
@@ -361,7 +361,7 @@ const styles = StyleSheet.create({
   },
   message: {
     fontSize: 12,
-    color: '#444',
+    color: '#9a9a9a',
     marginBottom: 8,
   },
   lines: {
@@ -373,14 +373,14 @@ const styles = StyleSheet.create({
     gap: 8,
     padding: 8,
     borderRadius: 8,
-    backgroundColor: '#fff',
+    backgroundColor: '#000000',
   },
   lineRowActive: {
     borderWidth: 1,
     borderColor: '#111',
   },
   lineRowMarked: {
-    backgroundColor: '#ecfdf5',
+    backgroundColor: '#1a1a1a',
     borderWidth: 1,
     borderColor: '#bbf7d0',
   },
@@ -388,16 +388,16 @@ const styles = StyleSheet.create({
     width: 22,
     fontSize: 12,
     fontWeight: '700',
-    color: '#999',
+    color: '#9a9a9a',
   },
   lineText: {
     flex: 1,
     fontSize: 13,
-    color: '#222',
+    color: '#ffffff',
   },
   lineTime: {
     fontSize: 12,
-    color: '#666',
+    color: '#9a9a9a',
     fontVariant: ['tabular-nums'],
   },
   lineTimeMarked: {

@@ -49,6 +49,14 @@ const {
   deleteVersion,
   ensureVersionStore,
 } = require('./trackVersions');
+const {
+  APK_NAME,
+  APK_PATH,
+  ICON_PATH,
+  apkAvailable,
+  ensureDownloadsDir,
+  renderDownloadPage,
+} = require('./appDownload');
 
 const AVATAR_EXT = new Set(['.jpg', '.jpeg', '.png', '.webp']);
 
@@ -114,6 +122,7 @@ function createId() {
 ensureDirs();
 ensureVersionStore();
 ensureAuthorAvatarsDir();
+ensureDownloadsDir();
 
 const storage = multer.diskStorage({
   destination: UPLOADS_DIR,
@@ -439,7 +448,7 @@ app.post('/api/music', musicUpload.array('tracks', 30), async (req, res) => {
     ok: true,
     uploaded,
     ...catalogResponse(req),
-    message: `Добавлено файлов: ${uploaded.length}. Сохранено в assets/music/`,
+    message: `Добавлено файлов: ${uploaded.length}. Сохранено в music/`,
   });
 });
 
@@ -645,14 +654,45 @@ app.get('/api/network', (_req, res) => {
   });
 });
 
+app.get('/app', (req, res) => {
+  res.type('html').send(renderDownloadPage(req, { version: '1.0.0' }));
+});
+
+app.get('/app/icon.png', (_req, res) => {
+  if (!fs.existsSync(ICON_PATH)) {
+    res.status(404).end();
+    return;
+  }
+  res.sendFile(ICON_PATH);
+});
+
+app.get(`/app/${APK_NAME}`, (_req, res) => {
+  if (!apkAvailable()) {
+    res.status(404).type('text/plain').send('APK не найден. Запустите: npm run app:prepare');
+    return;
+  }
+  const stat = fs.statSync(APK_PATH);
+  res.setHeader('Content-Type', 'application/vnd.android.package-archive');
+  res.setHeader('Content-Disposition', `attachment; filename="${APK_NAME}"`);
+  res.setHeader('Content-Length', stat.size);
+  res.setHeader('Accept-Ranges', 'bytes');
+  res.setHeader('Cache-Control', 'no-store');
+  fs.createReadStream(APK_PATH).pipe(res);
+});
+
 function logStartupUrls() {
   console.log(`[bauka-api] http://localhost:${PORT}`);
   getLanIpv4Addresses().forEach((ip) => {
     console.log(`[bauka-api] Wi-Fi API: http://${ip}:${PORT}`);
+    console.log(`[bauka-api] Скачать приложение: http://${ip}:${PORT}/app`);
     console.log(`[bauka-api] Админка (телефон): http://${ip}:8081`);
   });
+  console.log('[bauka-api] Скачать приложение: http://localhost:' + PORT + '/app');
   console.log('[bauka-api] Админка (ноутбук/Cursor): http://localhost:8081');
   console.log('[bauka-api] API v3: музыка, авторы, контенты пользователей');
+  if (!apkAvailable()) {
+    console.log('[bauka-api] APK не найден — npm run app:prepare');
+  }
 }
 
 app.listen(PORT, '0.0.0.0', () => {

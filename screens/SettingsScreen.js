@@ -8,7 +8,9 @@ import {
   Switch,
   ScrollView,
   StyleSheet,
+  Alert,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../context/AuthContext';
 import { useMusicCatalog } from '../context/MusicCatalogContext';
@@ -104,20 +106,30 @@ export default function SettingsScreen({
     );
   }
 
+  const handleResetProfile = () => {
+    Alert.alert(
+      'Сбросить профиль?',
+      'Имя и аватар вернутся к значениям по умолчанию. Музыка на телефоне не удалится.',
+      [
+        { text: 'Отмена', style: 'cancel' },
+        { text: 'Сбросить', style: 'destructive', onPress: logout },
+      ]
+    );
+  };
+
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Pressable onPress={onBack} style={styles.backBtn}>
-          <Ionicons name="chevron-back" size={24} color="#111" />
+    <SafeAreaView style={styles.container} edges={['top']}>
+      <View style={styles.topBar}>
+        <Pressable onPress={onBack} style={styles.backBtn} accessibilityLabel="Назад">
+          <Ionicons name="chevron-back" size={28} color="#fff" />
         </Pressable>
-        <Text style={styles.title}>Настройки</Text>
-        <View style={styles.headerSpacer} />
       </View>
 
-      <ScrollView contentContainerStyle={styles.content}>
+      <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
+        <Text style={styles.pageTitle}>Параметры</Text>
         {standalone ? (
           <View style={styles.infoBox}>
-            <Ionicons name="phone-portrait-outline" size={22} color="#111" />
+            <Ionicons name="phone-portrait-outline" size={22} color="#ffffff" />
             <Text style={styles.infoTitle}>Локальный режим</Text>
             <Text style={styles.infoText}>
               Приложение работает без сервера. Музыка, тексты, клипы и видео
@@ -126,21 +138,23 @@ export default function SettingsScreen({
           </View>
         ) : null}
 
-        <View style={styles.block}>
-          <Text style={styles.blockTitle}>Библиотека</Text>
-          <View style={styles.switchRow}>
-            <View style={styles.switchText}>
-              <Text style={styles.switchLabel}>Только моя музыка</Text>
-              <Text style={styles.switchHint}>
-                Скрыть встроенные треки из каталога и поиска
-              </Text>
+        {standalone ? null : (
+          <View style={styles.block}>
+            <Text style={styles.blockTitle}>Библиотека</Text>
+            <View style={styles.switchRow}>
+              <View style={styles.switchText}>
+                <Text style={styles.switchLabel}>Только моя музыка</Text>
+                <Text style={styles.switchHint}>
+                  Скрыть встроенные треки из каталога и поиска
+                </Text>
+              </View>
+              <Switch
+                value={hideBundledTracks}
+                onValueChange={setHideBundledTracks}
+              />
             </View>
-            <Switch
-              value={hideBundledTracks}
-              onValueChange={setHideBundledTracks}
-            />
           </View>
-        </View>
+        )}
 
         {!standalone ? (
           <View style={styles.block}>
@@ -181,44 +195,42 @@ export default function SettingsScreen({
             style={styles.adminBtn}
             onPress={() => setShowAdmin(true)}
           >
-            <Ionicons name="shield-checkmark-outline" size={20} color="#111" />
+            <Ionicons name="shield-checkmark-outline" size={20} color="#ffffff" />
             <Text style={styles.adminBtnText}>Админка</Text>
-            <Ionicons name="chevron-forward" size={18} color="#888" />
+            <Ionicons name="chevron-forward" size={18} color="#888888" />
           </Pressable>
         ) : null}
 
-        <Pressable style={styles.resetProfileBtn} onPress={logout}>
+        <Pressable style={styles.resetProfileBtn} onPress={handleResetProfile}>
           <Text style={styles.resetProfileText}>Сбросить профиль</Text>
         </Pressable>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#000000',
   },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  topBar: {
     paddingHorizontal: 8,
-    paddingVertical: 10,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: '#eee',
+    paddingBottom: 4,
   },
   backBtn: {
-    padding: 8,
-  },
-  title: {
-    flex: 1,
-    textAlign: 'center',
-    fontSize: 18,
-    fontWeight: '700',
-  },
-  headerSpacer: {
     width: 40,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  pageTitle: {
+    fontSize: 28,
+    fontWeight: '800',
+    color: '#fff',
+    letterSpacing: -0.3,
+    paddingHorizontal: 16,
+    marginBottom: 12,
   },
   content: {
     paddingBottom: 32,
@@ -227,29 +239,30 @@ const styles = StyleSheet.create({
     margin: 16,
     padding: 16,
     borderRadius: 14,
-    backgroundColor: '#f4f4f5',
+    backgroundColor: '#2b2b2b',
     gap: 8,
     alignItems: 'flex-start',
   },
   infoTitle: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#111',
+    color: '#ffffff',
   },
   infoText: {
     fontSize: 13,
-    color: '#555',
+    color: '#9a9a9a',
     lineHeight: 19,
   },
   block: {
     padding: 16,
     borderBottomWidth: 8,
-    borderBottomColor: '#f4f4f5',
+    borderBottomColor: '#333333',
     gap: 8,
   },
   blockTitle: {
     fontSize: 15,
     fontWeight: '700',
+    color: '#ffffff',
   },
   switchRow: {
     flexDirection: 'row',
@@ -263,26 +276,28 @@ const styles = StyleSheet.create({
   switchLabel: {
     fontSize: 15,
     fontWeight: '600',
-    color: '#111',
+    color: '#ffffff',
   },
   switchHint: {
     marginTop: 2,
     fontSize: 12,
-    color: '#888',
+    color: '#9a9a9a',
     lineHeight: 17,
   },
   apiHint: {
     fontSize: 12,
-    color: '#666',
+    color: '#9a9a9a',
     lineHeight: 17,
   },
   input: {
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: '#333333',
     borderRadius: 10,
     paddingHorizontal: 12,
     paddingVertical: 10,
     fontSize: 14,
+    color: '#ffffff',
+    backgroundColor: '#1a1a1a',
   },
   apiActions: {
     flexDirection: 'row',
@@ -290,7 +305,7 @@ const styles = StyleSheet.create({
   },
   testBtn: {
     flex: 1,
-    backgroundColor: '#111',
+    backgroundColor: '#2b2b2b',
     borderRadius: 10,
     paddingVertical: 12,
     alignItems: 'center',
@@ -303,15 +318,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#111',
+    borderColor: '#333333',
     justifyContent: 'center',
   },
   resetBtnText: {
     fontWeight: '600',
+    color: '#ffffff',
   },
   status: {
     fontSize: 12,
-    color: '#444',
+    color: '#9a9a9a',
     lineHeight: 17,
   },
   adminBtn: {
@@ -324,14 +340,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: '#e5e5e5',
-    backgroundColor: '#fafafa',
+    borderColor: '#333333',
+    backgroundColor: '#1a1a1a',
   },
   adminBtnText: {
     flex: 1,
     fontSize: 16,
     fontWeight: '600',
-    color: '#111',
+    color: '#ffffff',
   },
   resetProfileBtn: {
     margin: 16,
@@ -340,7 +356,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#fecaca',
     alignItems: 'center',
-    backgroundColor: '#fff5f5',
+    backgroundColor: '#2a1515',
   },
   resetProfileText: {
     color: '#c00',

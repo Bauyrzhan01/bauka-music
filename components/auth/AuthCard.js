@@ -6,6 +6,7 @@ import {
   StyleSheet,
   ActivityIndicator,
 } from 'react-native';
+import { APP_NAME } from '../../constants/appBrand';
 
 export default function AuthCard({
   mode,
@@ -22,7 +23,7 @@ export default function AuthCard({
 
   return (
     <View style={styles.card}>
-      <Text style={styles.logo}>Bauka Music</Text>
+      <Text style={styles.logo}>{APP_NAME}</Text>
 
       <Text style={styles.label}>Email</Text>
       <TextInput
@@ -78,7 +79,7 @@ export default function AuthCard({
 const styles = StyleSheet.create({
   card: {
     width: '100%',
-    backgroundColor: '#fff',
+    backgroundColor: '#000000',
     borderRadius: 20,
     padding: 24,
     shadowColor: '#000',
@@ -90,24 +91,26 @@ const styles = StyleSheet.create({
   logo: {
     fontSize: 22,
     fontWeight: '700',
+    color: '#ffffff',
     textAlign: 'center',
     marginBottom: 24,
   },
   label: {
     fontSize: 13,
     fontWeight: '600',
-    color: '#333',
+    color: '#9a9a9a',
     marginBottom: 6,
   },
   input: {
     borderWidth: 1,
-    borderColor: '#e0e0e0',
+    borderColor: '#333333',
     borderRadius: 12,
     paddingHorizontal: 14,
     paddingVertical: 12,
     fontSize: 16,
+    color: '#ffffff',
     marginBottom: 16,
-    backgroundColor: '#fafafa',
+    backgroundColor: '#1a1a1a',
   },
   error: {
     color: '#c00',
@@ -116,7 +119,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   button: {
-    backgroundColor: '#111',
+    backgroundColor: '#2b2b2b',
     borderRadius: 12,
     paddingVertical: 14,
     alignItems: 'center',
@@ -136,10 +139,10 @@ const styles = StyleSheet.create({
   },
   switchText: {
     fontSize: 14,
-    color: '#666',
+    color: '#9a9a9a',
   },
   switchLink: {
-    color: '#111',
+    color: '#ffffff',
     fontWeight: '600',
   },
 });

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, Platform, View } from 'react-native';
+import { mobileTheme } from './constants/mobileTheme';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { AuthProvider, useAuth } from './context/AuthContext';
@@ -20,8 +21,15 @@ import WebAccessDeniedScreen from './screens/web/WebAccessDeniedScreen';
 
 function AppLoading() {
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <ActivityIndicator size="large" color="#111" />
+    <View
+      style={{
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: mobileTheme.bg,
+      }}
+    >
+      <ActivityIndicator size="large" color={mobileTheme.text} />
     </View>
   );
 }
@@ -52,7 +60,7 @@ function MobileRoot() {
           </AlbumsProvider>
         </FavoritesProvider>
       </PlayerProvider>
-      <StatusBar style="auto" />
+      <StatusBar style="light" />
     </>
   );
 }

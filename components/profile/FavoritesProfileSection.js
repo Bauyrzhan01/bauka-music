@@ -12,7 +12,7 @@ export default function FavoritesProfileSection({ onOpenAll }) {
     <View style={styles.wrap}>
       <View style={styles.header}>
         <View style={styles.headerLeft}>
-          <Ionicons name="heart" size={18} color="#111" />
+          <Ionicons name="heart" size={18} color="#ffffff" />
           <Text style={styles.title}>Избранное</Text>
           <Text style={styles.count}>{favoriteCount}</Text>
         </View>
@@ -41,14 +41,14 @@ export default function FavoritesProfileSection({ onOpenAll }) {
                 }}
               >
                 <View style={styles.iconWrap}>
-                  <Ionicons name="musical-note" size={16} color="#111" />
+                  <Ionicons name="musical-note" size={16} color="#ffffff" />
                 </View>
                 <View style={styles.rowText}>
                   <Text style={styles.trackTitle} numberOfLines={1}>
                     {track.title}
                   </Text>
                   <Text style={styles.trackArtist} numberOfLines={1}>
-                    {track.artist || 'Bauka Music'}
+                    {track.artist || 'Tolqyn'}
                   </Text>
                 </View>
                 <FavoriteButton trackId={track.id} size={22} />
@@ -81,11 +81,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#111',
+    color: '#ffffff',
   },
   count: {
     fontSize: 14,
-    color: '#888',
+    color: '#9a9a9a',
     fontWeight: '600',
   },
   link: {
@@ -95,13 +95,13 @@ const styles = StyleSheet.create({
   },
   empty: {
     fontSize: 13,
-    color: '#888',
+    color: '#9a9a9a',
     paddingHorizontal: 16,
     lineHeight: 20,
   },
   list: {
     borderTopWidth: 1,
-    borderTopColor: '#eee',
+    borderTopColor: '#333333',
   },
   row: {
     flexDirection: 'row',
@@ -110,10 +110,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor: '#eee',
+    borderBottomColor: '#333333',
   },
   rowActive: {
-    backgroundColor: '#f7f7f7',
+    backgroundColor: '#1a1a1a',
   },
   iconWrap: {
     width: 36,
@@ -131,11 +131,11 @@ const styles = StyleSheet.create({
   trackTitle: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#111',
+    color: '#ffffff',
   },
   trackArtist: {
     fontSize: 12,
-    color: '#666',
+    color: '#9a9a9a',
     marginTop: 2,
   },
 });

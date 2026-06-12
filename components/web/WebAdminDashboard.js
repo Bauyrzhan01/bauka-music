@@ -30,7 +30,7 @@ export default function WebAdminDashboard() {
     <View>
       <Text style={[styles.pageTitle, { fontSize: pageTitleSize }]}>Обзор</Text>
       <Text style={styles.pageSubtitle}>
-        Управление контентом приложения Bauka Music
+        Управление контентом приложения Tolqyn
       </Text>
 
       <WebPhoneAccessGuide variant={isMobile ? 'compact' : 'full'} />

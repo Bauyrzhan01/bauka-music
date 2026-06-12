@@ -32,6 +32,6 @@ export default function ProfileMenu({ onItemPress, onLogout }) {
 const styles = StyleSheet.create({
   container: {
     borderTopWidth: 1,
-    borderTopColor: '#eee',
+    borderTopColor: '#333333',
   },
 });

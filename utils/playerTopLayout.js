@@ -1,6 +1,6 @@
 /** Совпадает с AnimatedPlayerArtwork PRESETS.large.wrapper */
 export const PLAYER_ARTWORK_WRAPPER = 260;
-export const PLAYER_ARTWORK_SCALE = 0.85;
+export const PLAYER_ARTWORK_SCALE = 0.88;
 
 /** Высота верха плеера: обложка (scale) + название (2 строки) + исполнитель */
 export const PLAYER_SCROLL_TOP_HEIGHT =

@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     width: SIZE,
     height: SIZE,
     borderRadius: SIZE / 2,
-    backgroundColor: '#111',
+    backgroundColor: '#2b2b2b',
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 4,
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 10,
     fontWeight: '600',
-    color: '#111',
+    color: '#ffffff',
     textAlign: 'center',
     maxWidth: SIZE + 12,
   },

@@ -13,10 +13,10 @@ import { fetchAllTrackVersions } from '../../api/trackVersionsApi';
 import { useAuth } from '../../context/AuthContext';
 import { useMusicCatalog } from '../../context/MusicCatalogContext';
 import { useMyLibrary } from '../../context/MyLibraryContext';
-import { collectLocalReels } from '../../utils/localReels';
+import { usePlayer } from '../../context/PlayerContext';
+import { collectAllLocalReels } from '../../utils/localReels';
 import { resolveTrackForVersion } from '../../utils/resolveTrackForVersion';
 import ContentAuthorRow from '../player/ContentAuthorRow';
-import { displayContentTitle } from '../../utils/displayContentTitle';
 import ReelCardPreview from '../player/ReelCardPreview';
 import ContentReelsViewer from '../player/ContentReelsViewer';
 
@@ -27,7 +27,8 @@ const standalone = isStandaloneApp();
 export default function HomeReelsSection() {
   const { user } = useAuth();
   const { tracks, lastSyncedAt } = useMusicCatalog();
-  const { entries } = useMyLibrary();
+  const { entries, trackReelsMap } = useMyLibrary();
+  const { playTrack } = usePlayer();
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -39,7 +40,11 @@ export default function HomeReelsSection() {
     setError('');
 
     if (standalone) {
-      setVideos(collectLocalReels(entries));
+      const resolveTrack = (trackId) =>
+        tracks.find((track) => track.id === trackId) ||
+        entries.find((entry) => entry.id === trackId) ||
+        null;
+      setVideos(collectAllLocalReels(entries, trackReelsMap, resolveTrack));
       setLoading(false);
       return;
     }
@@ -55,7 +60,7 @@ export default function HomeReelsSection() {
     } finally {
       setLoading(false);
     }
-  }, [entries]);
+  }, [entries, trackReelsMap, tracks]);
 
   useEffect(() => {
     loadVideos();
@@ -65,7 +70,7 @@ export default function HomeReelsSection() {
     return (
       <View style={styles.wrap}>
         <Text style={styles.title}>Reels</Text>
-        <ActivityIndicator color="#111" style={styles.loader} />
+        <ActivityIndicator color="#ffffff" style={styles.loader} />
       </View>
     );
   }
@@ -75,6 +80,11 @@ export default function HomeReelsSection() {
   const openReel = (index) => {
     setStartIndex(index);
     setViewerOpen(true);
+  };
+
+  const playReelTrack = (baseTrack) => {
+    if (!baseTrack) return;
+    playTrack(baseTrack, tracks);
   };
 
   return (
@@ -97,7 +107,6 @@ export default function HomeReelsSection() {
         >
           {videos.map((item, index) => {
             const baseTrack = resolveTrackForVersion(item, tracks);
-            const label = displayContentTitle(item, baseTrack);
             return (
               <Pressable
                 key={item.id}
@@ -109,29 +118,26 @@ export default function HomeReelsSection() {
                   <ReelCardPreview item={item} suspended={viewerOpen} />
                 </View>
                 {baseTrack ? (
-                  <View style={styles.trackTag} pointerEvents="none">
+                  <Pressable
+                    style={styles.trackTag}
+                    onPress={() => playReelTrack(baseTrack)}
+                    accessibilityLabel={`Играть ${baseTrack.title}`}
+                  >
                     <Ionicons name="musical-note" size={12} color="#fff" />
                     <Text style={styles.trackTagText} numberOfLines={1}>
                       {baseTrack.title}
                     </Text>
-                  </View>
+                  </Pressable>
                 ) : null}
-                {label ? (
-                  <Text style={styles.cardTitle} numberOfLines={2}>
-                    {label}
-                  </Text>
-                ) : null}
-                {!standalone ? (
-                  <View style={styles.authorTag} pointerEvents="none">
-                    <ContentAuthorRow
-                      item={item}
-                      currentUser={user}
-                      variant="onDark"
-                      avatarSize={18}
-                      textStyle={styles.authorText}
-                    />
-                  </View>
-                ) : null}
+                <View style={styles.authorTag} pointerEvents="none">
+                  <ContentAuthorRow
+                    item={item}
+                    currentUser={user}
+                    variant="onDark"
+                    avatarSize={18}
+                    textStyle={styles.authorText}
+                  />
+                </View>
               </Pressable>
             );
           })}
@@ -158,14 +164,14 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   title: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: '#111',
+    fontSize: 22,
+    fontWeight: '800',
+    color: '#fff',
   },
   subtitle: {
     marginTop: 2,
     fontSize: 12,
-    color: '#888',
+    color: '#9a9a9a',
   },
   loader: {
     marginVertical: 16,
@@ -189,7 +195,7 @@ const styles = StyleSheet.create({
     height: CARD_HEIGHT,
     borderRadius: 12,
     overflow: 'hidden',
-    backgroundColor: '#111',
+    backgroundColor: '#2b2b2b',
     borderWidth: 1,
     borderColor: '#222',
   },
@@ -215,17 +221,6 @@ const styles = StyleSheet.create({
     fontSize: 10,
     fontWeight: '600',
     color: '#fff',
-  },
-  cardTitle: {
-    position: 'absolute',
-    left: 8,
-    right: 8,
-    bottom: standalone ? 8 : 30,
-    fontSize: 11,
-    fontWeight: '700',
-    color: '#fff',
-    zIndex: 2,
-    lineHeight: 14,
   },
   authorTag: {
     position: 'absolute',

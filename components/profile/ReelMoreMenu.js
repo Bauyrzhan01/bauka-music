@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     paddingBottom: 32,
   },
   sheet: {
-    backgroundColor: '#fff',
+    backgroundColor: '#000000',
     borderRadius: 16,
     paddingVertical: 8,
     overflow: 'hidden',
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
   sheetTitle: {
     fontSize: 13,
     fontWeight: '600',
-    color: '#888',
+    color: '#9a9a9a',
     paddingHorizontal: 16,
     paddingVertical: 10,
     textTransform: 'uppercase',
@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
   },
   cancelText: {
     fontSize: 16,
-    color: '#666',
+    color: '#9a9a9a',
     fontWeight: '500',
   },
 });

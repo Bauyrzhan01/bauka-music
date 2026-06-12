@@ -3,6 +3,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react';
@@ -19,6 +20,7 @@ import {
 } from '../storage/playbackResumeStorage';
 import { pushRecentTrackId } from '../storage/recentListensStorage';
 import { subscribeCatalogTracks } from '../utils/catalogTrackRegistry';
+import { loadAppPreferences, saveAppPreferences } from '../storage/appPreferences';
 
 const PlayerContext = createContext(null);
 
@@ -70,14 +72,17 @@ export function PlayerProvider({ children }) {
   const currentTrackRef = useRef(null);
   const advancingRef = useRef(false);
   const repeatModeRef = useRef('off');
+  const volumeRef = useRef(1);
 
   const [baseTrack, setBaseTrack] = useState(null);
+  const [volume, setVolumeState] = useState(1);
   const [repeatMode, setRepeatMode] = useState('off');
   const [currentTrack, setCurrentTrack] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [positionMillis, setPositionMillis] = useState(0);
   const [durationMillis, setDurationMillis] = useState(0);
   const [isPlayerOpen, setIsPlayerOpen] = useState(false);
+  const [playlistTracks, setPlaylistTracks] = useState(LOCAL_TRACKS);
 
   const resetUiState = useCallback(() => {
     baseTrackRef.current = null;
@@ -88,6 +93,7 @@ export function PlayerProvider({ children }) {
     setPositionMillis(0);
     setDurationMillis(0);
     setIsPlayerOpen(false);
+    setPlaylistTracks(LOCAL_TRACKS);
   }, []);
 
   const releasePlayer = useCallback(() => {
@@ -184,6 +190,7 @@ export function PlayerProvider({ children }) {
     ) => {
       releasePlayer();
       playlistRef.current = playlist;
+      setPlaylistTracks(playlist);
       baseTrackRef.current = baseTrack;
       setBaseTrack(baseTrack);
 
@@ -238,6 +245,7 @@ export function PlayerProvider({ children }) {
 
       applyLockScreenMetadata(player, baseTrack);
 
+      player.volume = volumeRef.current;
       player.play();
       setIsPlaying(true);
 
@@ -275,6 +283,31 @@ export function PlayerProvider({ children }) {
   );
 
   const getPlayer = useCallback(() => playerRef.current ?? activeNativePlayer, []);
+
+  const applyVolume = useCallback((nextVolume) => {
+    if (currentTrackRef.current?.playbackKind === 'remote-video') return;
+    const player = getPlayer();
+    if (!player) return;
+    try {
+      player.volume = nextVolume;
+    } catch {
+      // ignore
+    }
+  }, [getPlayer]);
+
+  const setVolume = useCallback(
+    (nextVolume, { persist = true } = {}) => {
+      const clamped = Math.max(0, Math.min(1, nextVolume));
+      volumeRef.current = clamped;
+      setVolumeState(clamped);
+      applyVolume(clamped);
+      if (!persist) return;
+      loadAppPreferences()
+        .then((prefs) => saveAppPreferences({ ...prefs, playbackVolume: clamped }))
+        .catch(() => {});
+    },
+    [applyVolume]
+  );
 
   const isVideoPlayback = currentTrack?.playbackKind === 'remote-video';
 
@@ -389,6 +422,13 @@ export function PlayerProvider({ children }) {
     const bootstrap = async () => {
       if (!mounted) return;
 
+      const prefs = await loadAppPreferences();
+      const savedVolume =
+        typeof prefs.playbackVolume === 'number' ? prefs.playbackVolume : 1;
+      const clamped = Math.max(0, Math.min(1, savedVolume));
+      volumeRef.current = clamped;
+      setVolumeState(clamped);
+
       await setAudioModeAsync({
         playsInSilentMode: true,
         shouldPlayInBackground: true,
@@ -442,11 +482,35 @@ export function PlayerProvider({ children }) {
     isVideoPlayback,
   ]);
 
+  const playlistIndex = useMemo(() => {
+    if (!baseTrack?.id || !playlistTracks.length) return -1;
+    return playlistTracks.findIndex((item) => item.id === baseTrack.id);
+  }, [baseTrack?.id, playlistTracks]);
+
+  const previousTracks = useMemo(() => {
+    if (playlistIndex <= 0) return [];
+    return playlistTracks.slice(Math.max(0, playlistIndex - 12), playlistIndex);
+  }, [playlistIndex, playlistTracks]);
+
+  const upcomingTracks = useMemo(() => {
+    if (!baseTrack?.id || !playlistTracks.length) return [];
+
+    const tail =
+      playlistIndex >= 0
+        ? playlistTracks.slice(playlistIndex + 1)
+        : playlistTracks.filter((item) => item.id !== baseTrack.id);
+
+    return tail.slice(0, 24);
+  }, [baseTrack?.id, playlistIndex, playlistTracks]);
+
   return (
     <PlayerContext.Provider
       value={{
         currentTrack,
         baseTrack,
+        playlistTracks,
+        previousTracks,
+        upcomingTracks,
         isPlaying,
         positionMillis,
         durationMillis,
@@ -461,6 +525,8 @@ export function PlayerProvider({ children }) {
         playPrevious,
         repeatMode,
         cycleRepeatMode,
+        volume,
+        setVolume,
         openPlayer,
         closePlayer,
         stopPlayer,

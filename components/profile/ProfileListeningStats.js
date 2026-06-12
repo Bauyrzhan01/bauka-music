@@ -61,13 +61,13 @@ export default function ProfileListeningStats() {
 
       <View style={styles.row}>
         <View style={styles.statCard}>
-          <Ionicons name="time-outline" size={18} color="#111" />
+          <Ionicons name="time-outline" size={18} color="#ffffff" />
           <Text style={styles.statValue}>{insights.weekMinutes}</Text>
           <Text style={styles.statLabel}>мин за неделю</Text>
         </View>
         {insights.soulAuthorLabel ? (
           <View style={styles.statCard}>
-            <Ionicons name="heart-outline" size={18} color="#111" />
+            <Ionicons name="heart-outline" size={18} color="#ffffff" />
             <Text style={styles.statValue} numberOfLines={1}>
               {insights.soulAuthorLabel}
             </Text>
@@ -98,14 +98,14 @@ const styles = StyleSheet.create({
     padding: 14,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: '#eee',
-    backgroundColor: '#fafafa',
+    borderColor: '#333333',
+    backgroundColor: '#1a1a1a',
   },
   title: {
     fontSize: 14,
     fontWeight: '700',
     marginBottom: 10,
-    color: '#111',
+    color: '#ffffff',
   },
   row: {
     flexDirection: 'row',
@@ -114,10 +114,10 @@ const styles = StyleSheet.create({
   statCard: {
     flex: 1,
     minWidth: 0,
-    backgroundColor: '#fff',
+    backgroundColor: '#000000',
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#eee',
+    borderColor: '#333333',
     padding: 10,
     alignItems: 'center',
     gap: 4,
@@ -125,29 +125,29 @@ const styles = StyleSheet.create({
   statValue: {
     fontSize: 16,
     fontWeight: '800',
-    color: '#111',
+    color: '#ffffff',
     textAlign: 'center',
   },
   statLabel: {
     fontSize: 10,
-    color: '#666',
+    color: '#9a9a9a',
     textAlign: 'center',
   },
   topBox: {
     marginTop: 10,
     paddingTop: 10,
     borderTopWidth: 1,
-    borderTopColor: '#eee',
+    borderTopColor: '#333333',
   },
   topTitle: {
     fontSize: 12,
     fontWeight: '600',
-    color: '#666',
+    color: '#9a9a9a',
     marginBottom: 6,
   },
   topLine: {
     fontSize: 13,
-    color: '#333',
+    color: '#9a9a9a',
     marginBottom: 4,
   },
 });

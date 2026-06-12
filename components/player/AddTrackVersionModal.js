@@ -152,7 +152,7 @@ export default function AddTrackVersionModal({
           <View style={styles.sheetHeader}>
             <Text style={styles.sheetTitle}>Новый контент</Text>
             <Pressable onPress={handleClose} hitSlop={8} disabled={uploading}>
-              <Ionicons name="close" size={24} color="#111" />
+              <Ionicons name="close" size={24} color="#ffffff" />
             </Pressable>
           </View>
 
@@ -183,7 +183,7 @@ export default function AddTrackVersionModal({
               onPress={() => handlePick(true)}
               disabled={uploading}
             >
-              <Ionicons name="images-outline" size={20} color="#111" />
+              <Ionicons name="images-outline" size={20} color="#ffffff" />
               <Text style={styles.pickBtnText}>Выбрать несколько</Text>
             </Pressable>
             <Pressable
@@ -191,7 +191,7 @@ export default function AddTrackVersionModal({
               onPress={() => handlePick(false)}
               disabled={uploading}
             >
-              <Ionicons name="add-outline" size={22} color="#111" />
+              <Ionicons name="add-outline" size={22} color="#ffffff" />
             </Pressable>
           </View>
 
@@ -226,7 +226,7 @@ export default function AddTrackVersionModal({
                       hitSlop={8}
                       disabled={uploading}
                     >
-                      <Ionicons name="close-circle" size={20} color="#999" />
+                      <Ionicons name="close-circle" size={20} color="#888888" />
                     </Pressable>
                   </View>
                 ))}
@@ -269,7 +269,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.4)',
   },
   sheet: {
-    backgroundColor: '#fff',
+    backgroundColor: '#000000',
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
     padding: 20,
@@ -288,7 +288,7 @@ const styles = StyleSheet.create({
   },
   hint: {
     fontSize: 13,
-    color: '#666',
+    color: '#9a9a9a',
     lineHeight: 19,
     marginBottom: 16,
   },
@@ -299,7 +299,7 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: '#333333',
     borderRadius: 10,
     paddingHorizontal: 12,
     paddingVertical: 10,
@@ -341,13 +341,13 @@ const styles = StyleSheet.create({
   },
   fileSummary: {
     fontSize: 12,
-    color: '#666',
+    color: '#9a9a9a',
     marginBottom: 6,
   },
   fileList: {
     maxHeight: 140,
     borderWidth: 1,
-    borderColor: '#eee',
+    borderColor: '#333333',
     borderRadius: 10,
   },
   fileRow: {
@@ -357,12 +357,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
+    borderBottomColor: '#333333',
   },
   fileName: {
     flex: 1,
     fontSize: 13,
-    color: '#111',
+    color: '#ffffff',
   },
   error: {
     color: '#c00',
@@ -370,7 +370,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   uploadBtn: {
-    backgroundColor: '#111',
+    backgroundColor: '#2b2b2b',
     borderRadius: 10,
     paddingVertical: 14,
     alignItems: 'center',

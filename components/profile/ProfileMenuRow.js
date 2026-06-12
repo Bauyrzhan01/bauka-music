@@ -1,5 +1,6 @@
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { mobileTheme } from '../../constants/mobileTheme';
 
 export default function ProfileMenuRow({
   icon,
@@ -23,7 +24,7 @@ export default function ProfileMenuRow({
         <Ionicons
           name={icon}
           size={20}
-          color={destructive ? '#c00' : '#111'}
+          color={destructive ? mobileTheme.danger : mobileTheme.text}
         />
       </View>
       <View style={styles.textWrap}>
@@ -39,7 +40,7 @@ export default function ProfileMenuRow({
         ) : null}
       </View>
       {showChevron ? (
-        <Ionicons name="chevron-forward" size={18} color="#bbb" />
+        <Ionicons name="chevron-forward" size={18} color={mobileTheme.iconMuted} />
       ) : null}
     </Pressable>
   );
@@ -50,24 +51,24 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
-    paddingHorizontal: 16,
+    paddingHorizontal: 14,
     paddingVertical: 14,
-    borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: 'rgba(255,255,255,0.08)',
   },
   rowPressed: {
-    backgroundColor: '#f8f8f8',
+    backgroundColor: mobileTheme.surfaceMuted,
   },
   iconWrap: {
     width: 40,
     height: 40,
-    borderRadius: 12,
-    backgroundColor: '#f4f4f5',
+    borderRadius: 10,
+    backgroundColor: '#2a2a2a',
     alignItems: 'center',
     justifyContent: 'center',
   },
   iconWrapDestructive: {
-    backgroundColor: '#fee2e2',
+    backgroundColor: '#3a1a1a',
   },
   textWrap: {
     flex: 1,
@@ -77,13 +78,13 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#111',
+    color: mobileTheme.text,
   },
   labelDestructive: {
-    color: '#c00',
+    color: mobileTheme.danger,
   },
   subtitle: {
     fontSize: 12,
-    color: '#888',
+    color: mobileTheme.textMuted,
   },
 });

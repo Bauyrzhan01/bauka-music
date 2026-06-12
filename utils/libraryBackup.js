@@ -107,7 +107,7 @@ export async function exportLibraryZip(entries = []) {
   if (await Sharing.isAvailableAsync()) {
     await Sharing.shareAsync(exportPath, {
       mimeType: 'application/zip',
-      dialogTitle: 'Экспорт Bauka Music',
+      dialogTitle: 'Экспорт Tolqyn',
     });
   }
 

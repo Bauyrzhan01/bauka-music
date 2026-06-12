@@ -53,7 +53,7 @@ export default function HomeTrackCard({
             onPress={() => onRemoveOffline(track)}
             hitSlop={8}
           >
-            <Ionicons name="close" size={14} color="#111" />
+            <Ionicons name="close" size={14} color="#ffffff" />
           </Pressable>
         ) : null}
         <Pressable
@@ -78,7 +78,7 @@ export default function HomeTrackCard({
         style={[styles.artist, artistColor && { color: artistColor }]}
         numberOfLines={1}
       >
-        {track.artist || 'Bauka Music'}
+        {track.artist || 'Tolqyn'}
       </Text>
     </Pressable>
   );
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
     borderRadius: 12,
-    backgroundColor: '#111',
+    backgroundColor: '#2b2b2b',
     alignItems: 'center',
     justifyContent: 'center',
     zIndex: 2,
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: '#111',
+    backgroundColor: '#2b2b2b',
     alignItems: 'center',
     justifyContent: 'center',
     zIndex: 2,
@@ -145,11 +145,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 13,
     fontWeight: '700',
-    color: '#111',
+    color: '#ffffff',
   },
   artist: {
     fontSize: 11,
-    color: '#666',
+    color: '#9a9a9a',
     marginTop: 2,
   },
 });

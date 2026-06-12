@@ -32,7 +32,7 @@ export default function LocalAdminKaraokeSection({ entries, onOpenKaraoke }) {
             onPress={() => onOpenKaraoke?.(entry.id)}
           >
             <View style={styles.icon}>
-              <Ionicons name="mic" size={18} color="#111" />
+              <Ionicons name="mic" size={18} color="#ffffff" />
             </View>
             <View style={styles.text}>
               <Text style={styles.title} numberOfLines={1}>
@@ -46,7 +46,7 @@ export default function LocalAdminKaraokeSection({ entries, onOpenKaraoke }) {
                 {marked ? ' · метки ✓' : ''}
               </Text>
             </View>
-            <Ionicons name="chevron-forward" size={18} color="#bbb" />
+            <Ionicons name="chevron-forward" size={18} color="#666666" />
           </Pressable>
         );
       })}
@@ -60,13 +60,13 @@ const styles = StyleSheet.create({
   },
   hint: {
     fontSize: 13,
-    color: '#666',
+    color: '#9a9a9a',
     lineHeight: 19,
     marginBottom: 4,
   },
   empty: {
     fontSize: 14,
-    color: '#888',
+    color: '#9a9a9a',
     lineHeight: 20,
   },
   row: {
@@ -75,13 +75,13 @@ const styles = StyleSheet.create({
     gap: 12,
     paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
+    borderBottomColor: '#333333',
   },
   icon: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: '#f4f4f5',
+    backgroundColor: '#2b2b2b',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -92,11 +92,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#111',
+    color: '#ffffff',
   },
   meta: {
     marginTop: 2,
     fontSize: 12,
-    color: '#888',
+    color: '#9a9a9a',
   },
 });

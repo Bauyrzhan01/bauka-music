@@ -1,23 +1,24 @@
 import { View, TextInput, Pressable, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { mobileTheme } from '../../constants/mobileTheme';
 
 export default function SearchBar({ value, onChangeText, onClear }) {
   return (
     <View style={styles.wrap}>
-      <Ionicons name="search-outline" size={20} color="#666" />
+      <Ionicons name="search-outline" size={20} color={mobileTheme.iconMuted} />
       <TextInput
         style={styles.input}
         value={value}
         onChangeText={onChangeText}
         placeholder="Поиск песен и исполнителей"
-        placeholderTextColor="#999"
+        placeholderTextColor={mobileTheme.textDim}
         autoCapitalize="none"
         autoCorrect={false}
         returnKeyType="search"
       />
       {value.length > 0 ? (
         <Pressable onPress={onClear} accessibilityLabel="Очистить">
-          <Ionicons name="close-circle" size={20} color="#999" />
+          <Ionicons name="close-circle" size={20} color={mobileTheme.iconMuted} />
         </Pressable>
       ) : null}
     </View>
@@ -34,14 +35,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 12,
     borderRadius: 12,
-    borderWidth: 1.5,
-    borderColor: '#000',
-    backgroundColor: '#fff',
+    backgroundColor: mobileTheme.surface,
   },
   input: {
     flex: 1,
     fontSize: 15,
-    color: '#111',
+    color: mobileTheme.text,
     padding: 0,
   },
 });

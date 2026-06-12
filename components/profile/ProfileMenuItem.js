@@ -10,7 +10,7 @@ export default function ProfileMenuItem({ icon, label, onPress, danger }) {
         color={danger ? '#c00' : '#000'}
       />
       <Text style={[styles.label, danger && styles.labelDanger]}>{label}</Text>
-      <Ionicons name="chevron-forward" size={20} color="#999" />
+      <Ionicons name="chevron-forward" size={20} color="#888888" />
     </Pressable>
   );
 }
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     gap: 12,
     borderBottomWidth: 1,
-    borderBottomColor: '#eee',
+    borderBottomColor: '#333333',
   },
   label: {
     flex: 1,

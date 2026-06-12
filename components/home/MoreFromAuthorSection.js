@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 16,
     fontWeight: '700',
-    color: '#111',
+    color: '#fff',
   },
   profileBtn: {
     flexDirection: 'row',
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
   },
   profileText: {
     fontSize: 13,
-    color: '#666',
+    color: '#9a9a9a',
     fontWeight: '500',
   },
   row: {

@@ -171,7 +171,7 @@ export default function EditLocalTrackScreen({ trackId, onBack, onOpenKaraoke })
     <View style={styles.container}>
       <View style={styles.topBar}>
         <Pressable onPress={onBack} style={styles.backBtn}>
-          <Ionicons name="chevron-back" size={24} color="#111" />
+          <Ionicons name="chevron-back" size={24} color="#ffffff" />
         </Pressable>
         <Text style={styles.topTitle} numberOfLines={1}>
           Редактирование
@@ -182,7 +182,7 @@ export default function EditLocalTrackScreen({ trackId, onBack, onOpenKaraoke })
           style={styles.saveBtn}
         >
           {saving ? (
-            <ActivityIndicator size="small" color="#111" />
+            <ActivityIndicator size="small" color="#ffffff" />
           ) : saved ? (
             <View style={styles.savedBadge}>
               <Ionicons name="checkmark-circle" size={18} color="#16a34a" />
@@ -221,14 +221,14 @@ export default function EditLocalTrackScreen({ trackId, onBack, onOpenKaraoke })
               onPress={handleAddCover}
               disabled={busy}
             >
-              <Ionicons name="image-outline" size={18} color="#111" />
+              <Ionicons name="image-outline" size={18} color="#ffffff" />
               <Text style={styles.materialBtnText}>
                 {entry.coverUri ? 'Сменить обложку' : 'Добавить обложку'}
               </Text>
             </Pressable>
             {entry.coverUri ? (
               <Pressable style={styles.materialBtnMuted} onPress={handleRemoveCover}>
-                <Ionicons name="trash-outline" size={16} color="#888" />
+                <Ionicons name="trash-outline" size={16} color="#888888" />
                 <Text style={styles.materialBtnMutedText}>Удалить</Text>
               </Pressable>
             ) : null}
@@ -281,7 +281,7 @@ export default function EditLocalTrackScreen({ trackId, onBack, onOpenKaraoke })
               style={styles.karaokeOpenBtn}
               onPress={() => onOpenKaraoke(trackId)}
             >
-              <Ionicons name="mic-outline" size={16} color="#111" />
+              <Ionicons name="mic-outline" size={16} color="#ffffff" />
               <Text style={styles.karaokeOpenBtnText}>Ручная синхронизация</Text>
             </Pressable>
           ) : null}
@@ -303,10 +303,10 @@ export default function EditLocalTrackScreen({ trackId, onBack, onOpenKaraoke })
           disabled={syncing || busy}
         >
           {syncing ? (
-            <ActivityIndicator color="#111" />
+            <ActivityIndicator color="#ffffff" />
           ) : (
             <>
-              <Ionicons name="time-outline" size={18} color="#111" />
+              <Ionicons name="time-outline" size={18} color="#ffffff" />
               <Text style={styles.secondaryBtnText}>Авто-синхрон караоке</Text>
             </>
           )}
@@ -348,7 +348,7 @@ export default function EditLocalTrackScreen({ trackId, onBack, onOpenKaraoke })
         <Text style={styles.sectionTitle}>Видео (Reels)</Text>
         {(entry.videos || []).map((video) => (
           <View key={video.id} style={styles.videoRow}>
-            <Ionicons name="videocam" size={18} color="#555" />
+            <Ionicons name="videocam" size={18} color="#9a9a9a" />
             <Text style={styles.videoTitle} numberOfLines={1}>
               {video.title}
             </Text>
@@ -356,7 +356,7 @@ export default function EditLocalTrackScreen({ trackId, onBack, onOpenKaraoke })
               onPress={() => removeVideoFromEntry(trackId, video.id)}
               hitSlop={8}
             >
-              <Ionicons name="close-circle" size={22} color="#999" />
+              <Ionicons name="close-circle" size={22} color="#888888" />
             </Pressable>
           </View>
         ))}
@@ -365,7 +365,7 @@ export default function EditLocalTrackScreen({ trackId, onBack, onOpenKaraoke })
           onPress={handleAddVideo}
           disabled={busy}
         >
-          <Ionicons name="add-circle-outline" size={18} color="#111" />
+          <Ionicons name="add-circle-outline" size={18} color="#ffffff" />
           <Text style={styles.secondaryBtnText}>Добавить видео</Text>
         </Pressable>
 
@@ -399,7 +399,7 @@ function MaterialStatus({ label, ok, count }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#000000',
   },
   missing: {
     flex: 1,
@@ -409,11 +409,11 @@ const styles = StyleSheet.create({
   },
   missingText: {
     fontSize: 16,
-    color: '#666',
+    color: '#9a9a9a',
   },
   backLink: {
     fontSize: 15,
-    color: '#111',
+    color: '#ffffff',
     fontWeight: '600',
   },
   topBar: {
@@ -422,7 +422,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     paddingVertical: 10,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: '#eee',
+    borderBottomColor: '#333333',
   },
   backBtn: {
     padding: 8,
@@ -432,7 +432,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 17,
     fontWeight: '600',
-    color: '#111',
+    color: '#ffffff',
     paddingHorizontal: 8,
   },
   saveBtn: {
@@ -444,7 +444,7 @@ const styles = StyleSheet.create({
   saveBtnText: {
     fontSize: 15,
     fontWeight: '600',
-    color: '#111',
+    color: '#ffffff',
   },
   savedBadge: {
     flexDirection: 'row',
@@ -469,18 +469,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     paddingVertical: 5,
     borderRadius: 20,
-    backgroundColor: '#f4f4f5',
+    backgroundColor: '#2b2b2b',
   },
   statusChipOk: {
-    backgroundColor: '#ecfdf5',
+    backgroundColor: '#1a1a1a',
   },
   statusChipEmpty: {
-    backgroundColor: '#f4f4f5',
+    backgroundColor: '#2b2b2b',
   },
   statusChipText: {
     fontSize: 11,
     fontWeight: '600',
-    color: '#888',
+    color: '#9a9a9a',
   },
   statusChipTextOk: {
     color: '#166534',
@@ -493,7 +493,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 8,
     borderRadius: 10,
-    backgroundColor: '#ecfdf5',
+    backgroundColor: '#1a1a1a',
   },
   markSavedText: {
     fontSize: 13,
@@ -507,24 +507,24 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 13,
     fontWeight: '600',
-    color: '#555',
+    color: '#9a9a9a',
     marginBottom: 6,
     marginTop: 12,
   },
   hint: {
     fontSize: 12,
-    color: '#999',
+    color: '#9a9a9a',
     marginBottom: 6,
   },
   input: {
     borderWidth: 1,
-    borderColor: '#e5e5e5',
+    borderColor: '#333333',
     borderRadius: 12,
     paddingHorizontal: 14,
     paddingVertical: 12,
     fontSize: 15,
-    color: '#111',
-    backgroundColor: '#fafafa',
+    color: '#ffffff',
+    backgroundColor: '#1a1a1a',
   },
   textArea: {
     minHeight: 160,
@@ -537,7 +537,7 @@ const styles = StyleSheet.create({
     gap: 8,
     paddingVertical: 12,
     borderRadius: 12,
-    backgroundColor: '#f4f4f5',
+    backgroundColor: '#2b2b2b',
   },
   btnDisabled: {
     opacity: 0.6,
@@ -545,19 +545,19 @@ const styles = StyleSheet.create({
   secondaryBtnText: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#111',
+    color: '#ffffff',
   },
   meta: {
     marginTop: 6,
     fontSize: 12,
-    color: '#888',
+    color: '#9a9a9a',
   },
   sectionTitle: {
     marginTop: 8,
     marginBottom: 8,
     fontSize: 15,
     fontWeight: '700',
-    color: '#111',
+    color: '#ffffff',
   },
   karaokeHeader: {
     flexDirection: 'row',
@@ -575,12 +575,12 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderWidth: 1,
     borderColor: '#111',
-    backgroundColor: '#fff',
+    backgroundColor: '#000000',
   },
   karaokeOpenBtnText: {
     fontSize: 12,
     fontWeight: '600',
-    color: '#111',
+    color: '#ffffff',
   },
   coverRow: {
     flexDirection: 'row',
@@ -599,12 +599,12 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 14,
     borderRadius: 12,
-    backgroundColor: '#f4f4f5',
+    backgroundColor: '#2b2b2b',
   },
   materialBtnText: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#111',
+    color: '#ffffff',
   },
   materialBtnMuted: {
     flexDirection: 'row',
@@ -615,7 +615,7 @@ const styles = StyleSheet.create({
   },
   materialBtnMutedText: {
     fontSize: 13,
-    color: '#888',
+    color: '#9a9a9a',
   },
   videoRow: {
     flexDirection: 'row',
@@ -623,12 +623,12 @@ const styles = StyleSheet.create({
     gap: 8,
     paddingVertical: 10,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: '#eee',
+    borderBottomColor: '#333333',
   },
   videoTitle: {
     flex: 1,
     fontSize: 14,
-    color: '#333',
+    color: '#9a9a9a',
   },
   authorChips: {
     flexDirection: 'row',
@@ -641,17 +641,17 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: '#ddd',
-    backgroundColor: '#fff',
+    borderColor: '#333333',
+    backgroundColor: '#000000',
   },
   authorChipActive: {
     borderColor: '#111',
-    backgroundColor: '#111',
+    backgroundColor: '#2b2b2b',
   },
   authorChipText: {
     fontSize: 13,
     fontWeight: '600',
-    color: '#444',
+    color: '#9a9a9a',
   },
   authorChipTextActive: {
     color: '#fff',
@@ -671,7 +671,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     borderWidth: 1,
     borderColor: '#fecaca',
-    backgroundColor: '#fff5f5',
+    backgroundColor: '#2a1515',
   },
   deleteBtnText: {
     fontSize: 14,

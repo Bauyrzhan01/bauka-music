@@ -1,60 +1,50 @@
 import { View, Text, Pressable, StyleSheet } from 'react-native';
-import { Image } from 'expo-image';
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
+import { APP_NAME } from '../constants/appBrand';
 
-const ICON_SIZE = 24;
-const ICON_COLOR = '#000';
-const AVATAR_SIZE = 32;
+const ICON_SIZE = 26;
 
-export default function HomeHeader({
-  accountName,
-  avatarUri,
-  avatarAccentColor = '#111111',
-  onProfile,
-  onSearch,
-  onNotifications,
-}) {
+export default function HomeHeader({ onAdd, onSearch, dark = false, overlay = false }) {
   return (
-    <View style={styles.header}>
-      <Pressable style={styles.left} onPress={onProfile}>
-        {avatarUri ? (
-          <View
-            style={[
-              styles.avatarWrap,
-              { borderColor: avatarAccentColor || '#111111' },
-            ]}
-          >
-            <Image
-              source={{ uri: avatarUri }}
-              style={styles.avatarImage}
-              contentFit="cover"
-              cachePolicy="memory-disk"
-            />
+    <View
+      style={[
+        styles.header,
+        dark && !overlay && styles.headerDark,
+        overlay && styles.headerOverlay,
+      ]}
+      pointerEvents="box-none"
+    >
+      <Pressable style={styles.addBtn} onPress={onAdd} hitSlop={8}>
+        <LinearGradient
+          colors={['#ff6b6b', '#ffd93d', '#6bcb77', '#4d96ff', '#9b59b6']}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={styles.addRing}
+        >
+          <View style={styles.addInner}>
+            <Ionicons name="add" size={22} color="#fff" />
           </View>
-        ) : (
-          <Ionicons
-            name="person-circle-outline"
-            size={28}
-            color={ICON_COLOR}
-          />
-        )}
-        <Text style={styles.accountName} numberOfLines={1}>
-          {accountName || 'Профиль'}
-        </Text>
+        </LinearGradient>
       </Pressable>
 
-      <View style={styles.right}>
-        <Pressable onPress={onSearch} accessibilityLabel="Поиск">
-          <Ionicons name="search-outline" size={ICON_SIZE} color={ICON_COLOR} />
-        </Pressable>
-        <Pressable onPress={onNotifications} accessibilityLabel="Уведомления">
-          <Ionicons
-            name="notifications-outline"
-            size={ICON_SIZE}
-            color={ICON_COLOR}
-          />
-        </Pressable>
+      <View style={styles.logoRow}>
+        <Ionicons
+          name="sparkles"
+          size={20}
+          color="#8ecbff"
+          style={[styles.logoIcon, overlay && styles.logoIconShadow]}
+        />
+        <Text style={[styles.logo, overlay && styles.logoShadow]}>{APP_NAME}</Text>
       </View>
+
+      <Pressable onPress={onSearch} accessibilityLabel="Поиск" hitSlop={8}>
+        <Ionicons
+          name="search"
+          size={ICON_SIZE}
+          color={dark ? '#fff' : '#111'}
+        />
+      </Pressable>
     </View>
   );
 }
@@ -65,35 +55,63 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 16,
-    paddingVertical: 12,
+    paddingVertical: 8,
   },
-  left: {
+  headerDark: {
+    backgroundColor: '#000',
+  },
+  headerOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 20,
+    backgroundColor: 'transparent',
+  },
+  logoShadow: {
+    textShadowColor: 'rgba(0,0,0,0.75)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 6,
+  },
+  logoIconShadow: {
+    shadowColor: '#000',
+    shadowOpacity: 0.45,
+    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 1 },
+  },
+  addBtn: {
+    width: 40,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  addRing: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    padding: 2,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  addInner: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: '#111',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  logoRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
-    flexShrink: 1,
   },
-  avatarWrap: {
-    width: AVATAR_SIZE,
-    height: AVATAR_SIZE,
-    borderRadius: AVATAR_SIZE / 2,
-    borderWidth: 2,
-    overflow: 'hidden',
-    backgroundColor: '#f4f4f5',
+  logoIcon: {
+    marginRight: 6,
   },
-  avatarImage: {
-    width: '100%',
-    height: '100%',
-  },
-  accountName: {
-    flexShrink: 1,
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#111',
-  },
-  right: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 16,
+  logo: {
+    fontSize: 21,
+    fontWeight: '800',
+    color: '#8ecbff',
+    letterSpacing: 0.2,
   },
 });

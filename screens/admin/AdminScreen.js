@@ -47,11 +47,11 @@ export default function AdminScreen({ onBack }) {
     <View style={styles.container}>
       <View style={styles.header}>
         <Pressable onPress={onBack}>
-          <Ionicons name="arrow-back" size={24} color="#000" />
+          <Ionicons name="arrow-back" size={24} color="#ffffff" />
         </Pressable>
         <Text style={styles.title}>Админка — NBO</Text>
         <Pressable onPress={() => setIsCreating(true)}>
-          <Ionicons name="add-circle-outline" size={26} color="#000" />
+          <Ionicons name="add-circle-outline" size={26} color="#ffffff" />
         </Pressable>
       </View>
 
@@ -116,7 +116,7 @@ export default function AdminScreen({ onBack }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#000000',
   },
   header: {
     flexDirection: 'row',
@@ -133,19 +133,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingBottom: 8,
     fontSize: 13,
-    color: '#666',
+    color: '#9a9a9a',
   },
   list: {
     padding: 16,
   },
   empty: {
     textAlign: 'center',
-    color: '#888',
+    color: '#9a9a9a',
     marginTop: 40,
   },
   card: {
     borderWidth: 1,
-    borderColor: '#eee',
+    borderColor: '#333333',
     borderRadius: 12,
     overflow: 'hidden',
     marginBottom: 12,
@@ -157,14 +157,14 @@ const styles = StyleSheet.create({
   thumbPlaceholder: {
     width: '100%',
     height: 60,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#2b2b2b',
     alignItems: 'center',
     justifyContent: 'center',
     padding: 8,
   },
   thumbPlaceholderText: {
     fontSize: 12,
-    color: '#888',
+    color: '#9a9a9a',
     textAlign: 'center',
   },
   cardActions: {
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: '#333333',
     borderRadius: 8,
   },
   deleteBtn: {

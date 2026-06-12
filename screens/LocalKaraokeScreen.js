@@ -86,7 +86,7 @@ export default function LocalKaraokeScreen({ trackId, onBack, onOpenEdit }) {
     <View style={styles.container}>
       <View style={styles.topBar}>
         <Pressable onPress={onBack} style={styles.backBtn}>
-          <Ionicons name="chevron-back" size={24} color="#111" />
+          <Ionicons name="chevron-back" size={24} color="#ffffff" />
         </Pressable>
         <View style={styles.topText}>
           <Text style={styles.topTitle} numberOfLines={1}>
@@ -98,7 +98,7 @@ export default function LocalKaraokeScreen({ trackId, onBack, onOpenEdit }) {
         </View>
         {onOpenEdit ? (
           <Pressable onPress={() => onOpenEdit(trackId)} style={styles.editBtn}>
-            <Ionicons name="create-outline" size={22} color="#111" />
+            <Ionicons name="create-outline" size={22} color="#ffffff" />
           </Pressable>
         ) : (
           <View style={styles.topSpacer} />
@@ -125,7 +125,7 @@ export default function LocalKaraokeScreen({ trackId, onBack, onOpenEdit }) {
           disabled={savingText || busy}
         >
           {savingText ? (
-            <ActivityIndicator color="#111" size="small" />
+            <ActivityIndicator color="#ffffff" size="small" />
           ) : (
             <Text style={styles.saveTextBtnLabel}>Сохранить текст</Text>
           )}
@@ -138,10 +138,10 @@ export default function LocalKaraokeScreen({ trackId, onBack, onOpenEdit }) {
             disabled={syncing || busy || !lyricLines.length}
           >
             {syncing ? (
-              <ActivityIndicator color="#111" />
+              <ActivityIndicator color="#ffffff" />
             ) : (
               <>
-                <Ionicons name="flash-outline" size={18} color="#111" />
+                <Ionicons name="flash-outline" size={18} color="#ffffff" />
                 <Text style={styles.autoBtnText}>Авто-синхрон</Text>
               </>
             )}
@@ -171,7 +171,7 @@ export default function LocalKaraokeScreen({ trackId, onBack, onOpenEdit }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#000000',
   },
   missing: {
     flex: 1,
@@ -181,12 +181,12 @@ const styles = StyleSheet.create({
   },
   missingText: {
     fontSize: 16,
-    color: '#666',
+    color: '#9a9a9a',
   },
   backLink: {
     fontSize: 15,
     fontWeight: '600',
-    color: '#111',
+    color: '#ffffff',
   },
   topBar: {
     flexDirection: 'row',
@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     paddingVertical: 10,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: '#eee',
+    borderBottomColor: '#333333',
   },
   backBtn: {
     padding: 8,
@@ -206,12 +206,12 @@ const styles = StyleSheet.create({
   topTitle: {
     fontSize: 17,
     fontWeight: '700',
-    color: '#111',
+    color: '#ffffff',
   },
   topSubtitle: {
     marginTop: 2,
     fontSize: 12,
-    color: '#888',
+    color: '#9a9a9a',
   },
   editBtn: {
     padding: 8,
@@ -226,23 +226,23 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 15,
     fontWeight: '700',
-    color: '#111',
+    color: '#ffffff',
   },
   hint: {
     marginTop: 4,
     marginBottom: 8,
     fontSize: 12,
-    color: '#888',
+    color: '#9a9a9a',
   },
   input: {
     borderWidth: 1,
-    borderColor: '#e5e5e5',
+    borderColor: '#333333',
     borderRadius: 12,
     paddingHorizontal: 14,
     paddingVertical: 12,
     fontSize: 15,
-    color: '#111',
-    backgroundColor: '#fafafa',
+    color: '#ffffff',
+    backgroundColor: '#1a1a1a',
   },
   textArea: {
     minHeight: 140,
@@ -253,12 +253,12 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: '#333333',
   },
   saveTextBtnLabel: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#111',
+    color: '#ffffff',
   },
   syncActions: {
     marginTop: 16,
@@ -271,12 +271,12 @@ const styles = StyleSheet.create({
     gap: 8,
     paddingVertical: 12,
     borderRadius: 12,
-    backgroundColor: '#f4f4f5',
+    backgroundColor: '#2b2b2b',
   },
   autoBtnText: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#111',
+    color: '#ffffff',
   },
   btnDisabled: {
     opacity: 0.6,
@@ -289,7 +289,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 8,
     borderRadius: 10,
-    backgroundColor: '#ecfdf5',
+    backgroundColor: '#1a1a1a',
   },
   markBadgeText: {
     fontSize: 13,

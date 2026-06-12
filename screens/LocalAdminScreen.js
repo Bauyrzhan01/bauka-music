@@ -131,7 +131,7 @@ export default function LocalAdminScreen({
                   key={cat.id}
                   style={[styles.categoryChip, { backgroundColor: cat.color }]}
                 >
-                  <Ionicons name={cat.icon} size={16} color="#111" />
+                  <Ionicons name={cat.icon} size={16} color="#ffffff" />
                   <Text style={styles.categoryName}>{cat.name}</Text>
                 </View>
               ))}
@@ -177,7 +177,7 @@ export default function LocalAdminScreen({
           onPress={showBackToMenu ? () => setSection('menu') : onBack}
           style={styles.backBtn}
         >
-          <Ionicons name="chevron-back" size={24} color="#111" />
+          <Ionicons name="chevron-back" size={24} color="#ffffff" />
         </Pressable>
         <Text style={styles.title}>
           {showBackToMenu
@@ -197,7 +197,7 @@ export default function LocalAdminScreen({
 function StatCard({ label, value, icon }) {
   return (
     <View style={styles.statCard}>
-      <Ionicons name={icon} size={20} color="#111" />
+      <Ionicons name={icon} size={20} color="#ffffff" />
       <Text style={styles.statValue}>{value}</Text>
       <Text style={styles.statLabel}>{label}</Text>
     </View>
@@ -207,7 +207,7 @@ function StatCard({ label, value, icon }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#000000',
   },
   header: {
     flexDirection: 'row',
@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     paddingVertical: 10,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: '#eee',
+    borderBottomColor: '#333333',
   },
   backBtn: {
     padding: 8,
@@ -225,6 +225,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 18,
     fontWeight: '700',
+    color: '#ffffff',
   },
   headerSpacer: {
     width: 40,
@@ -242,11 +243,11 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 20,
     fontWeight: '700',
-    color: '#111',
+    color: '#ffffff',
   },
   sectionHint: {
     fontSize: 13,
-    color: '#666',
+    color: '#9a9a9a',
     lineHeight: 19,
   },
   statsGrid: {
@@ -259,22 +260,22 @@ const styles = StyleSheet.create({
     width: '47%',
     padding: 14,
     borderRadius: 14,
-    backgroundColor: '#f4f4f5',
+    backgroundColor: '#2b2b2b',
     gap: 4,
   },
   statValue: {
     fontSize: 24,
     fontWeight: '700',
-    color: '#111',
+    color: '#ffffff',
   },
   statLabel: {
     fontSize: 12,
-    color: '#666',
+    color: '#9a9a9a',
   },
   userLine: {
     marginTop: 8,
     fontSize: 13,
-    color: '#888',
+    color: '#9a9a9a',
   },
   authorRow: {
     flexDirection: 'row',
@@ -282,13 +283,13 @@ const styles = StyleSheet.create({
     gap: 12,
     paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
+    borderBottomColor: '#333333',
   },
   authorIcon: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: '#f4f4f5',
+    backgroundColor: '#2b2b2b',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -298,16 +299,16 @@ const styles = StyleSheet.create({
   authorName: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#111',
+    color: '#ffffff',
   },
   authorMeta: {
     fontSize: 12,
-    color: '#888',
+    color: '#9a9a9a',
     marginTop: 2,
   },
   emptyText: {
     fontSize: 14,
-    color: '#888',
+    color: '#9a9a9a',
     marginTop: 8,
   },
   categoryGrid: {
@@ -327,6 +328,6 @@ const styles = StyleSheet.create({
   categoryName: {
     fontSize: 13,
     fontWeight: '600',
-    color: '#111',
+    color: '#ffffff',
   },
 });

@@ -1,178 +1,130 @@
 import { View, Text, Pressable, StyleSheet } from 'react-native';
+import { Image } from 'expo-image';
 import { Ionicons } from '@expo/vector-icons';
 import { usePlayer } from '../../context/PlayerContext';
+import { useFavorites } from '../../context/FavoritesContext';
 import { useTrackCoverUrl } from '../../hooks/useTrackCoverUrl';
-import { useTrackCoverTheme } from '../../hooks/useTrackCoverTheme';
-import { useActiveLyricLine } from '../../hooks/useActiveLyricLine';
-import AnimatedPlayerArtwork from './AnimatedPlayerArtwork';
-import MiniKaraokeLine from './MiniKaraokeLine';
-import FavoriteButton from '../FavoriteButton';
 
 export default function MiniPlayer() {
   const {
     currentTrack,
+    baseTrack,
     isPlaying,
-    positionMillis,
-    durationMillis,
     togglePlay,
     openPlayer,
-    playNext,
-    playPrevious,
   } = usePlayer();
-
-  const { hasLyrics } = useActiveLyricLine(
-    currentTrack?.description,
-    positionMillis,
-    durationMillis,
-    currentTrack?.lyricsTimings
-  );
+  const { isFavorite, toggleFavorite } = useFavorites();
 
   const coverUrl = useTrackCoverUrl(currentTrack);
-  const theme = useTrackCoverTheme(coverUrl);
 
   if (!currentTrack) return null;
 
+  const trackId = baseTrack?.id || currentTrack.id;
+  const favorited = isFavorite(trackId);
+
   return (
-    <View
-      style={[
-        styles.wrap,
-        {
-          backgroundColor: theme.miniBackground,
-          borderTopColor: theme.border,
-        },
-      ]}
-    >
-      <View style={styles.leftCol}>
-        <View style={styles.transportRow}>
-          <Pressable
-            style={styles.skipBtn}
-            onPress={playPrevious}
-            hitSlop={8}
-            accessibilityLabel="Предыдущий трек"
-          >
-            <Ionicons name="play-skip-back" size={20} color={theme.textMuted} />
-          </Pressable>
+    <View style={styles.wrap}>
+      <Pressable style={styles.row} onPress={openPlayer}>
+        {coverUrl ? (
+          <Image source={{ uri: coverUrl }} style={styles.cover} contentFit="cover" />
+        ) : (
+          <View style={[styles.cover, styles.coverPh]}>
+            <Ionicons name="musical-note" size={18} color="#888" />
+          </View>
+        )}
 
-          <Pressable
-            style={styles.avatarBtn}
-            onPress={togglePlay}
-            accessibilityLabel={isPlaying ? 'Пауза' : 'Играть'}
-          >
-            <AnimatedPlayerArtwork
-              size="mini"
-              isPlaying={isPlaying}
-              variant="dark"
-              imageUri={coverUrl}
-            />
-          </Pressable>
-
-          <Pressable
-            style={styles.skipBtn}
-            onPress={playNext}
-            hitSlop={8}
-            accessibilityLabel="Следующий трек"
-          >
-            <Ionicons name="play-skip-forward" size={20} color={theme.textMuted} />
-          </Pressable>
+        <View style={styles.meta}>
+          <Text style={styles.title} numberOfLines={1}>
+            {currentTrack.title}
+          </Text>
+          <Text style={styles.artist} numberOfLines={1}>
+            {currentTrack.artist || 'Tolqyn'}
+          </Text>
         </View>
 
-        <Text style={[styles.title, { color: theme.text }]} numberOfLines={2}>
-          {currentTrack.title}
-        </Text>
-      </View>
-
-      <Pressable
-        style={styles.contentCol}
-        onPress={openPlayer}
-        accessibilityLabel="Открыть плеер"
-      >
-        {hasLyrics ? (
-          <MiniKaraokeLine
-            lyricsText={currentTrack.description}
-            positionMillis={positionMillis}
-            durationMillis={durationMillis}
-            lyricsTimings={currentTrack.lyricsTimings}
-            tone={theme.tone}
+        <Pressable
+          onPress={(e) => {
+            e.stopPropagation?.();
+            toggleFavorite(trackId);
+          }}
+          hitSlop={8}
+          style={styles.actionBtn}
+          accessibilityLabel={favorited ? 'Убрать из избранного' : 'В избранное'}
+        >
+          <Ionicons
+            name={favorited ? 'heart' : 'heart-outline'}
+            size={24}
+            color="#fff"
           />
-        ) : (
-          <Text style={[styles.artist, { color: theme.textMuted }]} numberOfLines={2}>
-            {currentTrack.artist || 'Bauka Music'}
-          </Text>
-        )}
-      </Pressable>
+        </Pressable>
 
-      <View
-        style={[
-          styles.favoriteCol,
-          { backgroundColor: theme.surface, borderColor: theme.surfaceBorder },
-        ]}
-      >
-        <FavoriteButton
-          trackId={currentTrack.id}
-          size={20}
-          color={theme.textMuted}
-          activeColor={theme.favoriteActive}
-        />
-      </View>
+        <Pressable
+          onPress={(e) => {
+            e.stopPropagation?.();
+            togglePlay();
+          }}
+          hitSlop={8}
+          style={styles.actionBtn}
+          accessibilityLabel={isPlaying ? 'Пауза' : 'Играть'}
+        >
+          <Ionicons
+            name={isPlaying ? 'pause' : 'play'}
+            size={26}
+            color="#fff"
+            style={!isPlaying && styles.playOffset}
+          />
+        </Pressable>
+      </Pressable>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   wrap: {
+    backgroundColor: '#2a2a2a',
+    marginHorizontal: 0,
+    marginBottom: 0,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: 'rgba(255,255,255,0.08)',
+  },
+  row: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderTopWidth: 1,
-    minHeight: 88,
-    paddingVertical: 10,
-    paddingLeft: 8,
-    paddingRight: 12,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
     gap: 10,
   },
-  leftCol: {
-    alignItems: 'center',
-    width: 118,
+  cover: {
+    width: 44,
+    height: 44,
+    borderRadius: 6,
+    backgroundColor: '#1a1a1a',
   },
-  transportRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 2,
-  },
-  skipBtn: {
-    width: 32,
-    height: 42,
+  coverPh: {
     alignItems: 'center',
     justifyContent: 'center',
   },
-  avatarBtn: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 11,
-    fontWeight: '600',
-    textAlign: 'center',
-    lineHeight: 14,
-    marginTop: 6,
-    width: '100%',
-  },
-  contentCol: {
+  meta: {
     flex: 1,
     minWidth: 0,
-    justifyContent: 'center',
+  },
+  title: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: '600',
   },
   artist: {
-    fontSize: 14,
-    lineHeight: 20,
+    color: 'rgba(255,255,255,0.55)',
+    fontSize: 12,
+    marginTop: 2,
   },
-  favoriteCol: {
-    justifyContent: 'center',
+  actionBtn: {
+    width: 36,
+    height: 36,
     alignItems: 'center',
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    borderWidth: 1,
-    marginLeft: 4,
+    justifyContent: 'center',
+  },
+  playOffset: {
+    marginLeft: 2,
   },
 });

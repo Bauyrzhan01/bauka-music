@@ -40,7 +40,9 @@ export function MusicCatalogProvider({ children }) {
   const [lastSyncedAt, setLastSyncedAt] = useState(null);
 
   const tracks = useMemo(() => {
-    if (hideBundledTracks) {
+    const includeBundled = standalone || !hideBundledTracks;
+
+    if (!includeBundled) {
       return libraryTracks;
     }
 

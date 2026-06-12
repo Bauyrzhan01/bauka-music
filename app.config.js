@@ -5,7 +5,7 @@ const apiUrl = process.env.EXPO_PUBLIC_API_URL || null;
 module.exports = {
   expo: {
     ...base.expo,
-    name: 'Bauka Music',
+    name: 'Tolqyn',
     extra: {
       ...base.expo.extra,
       apiUrl,

@@ -79,7 +79,7 @@ export default function ContinueListeningSection() {
             {resume.track.title}
           </Text>
           <Text style={styles.artist} numberOfLines={1}>
-            {resume.track.artist || 'Bauka Music'}
+            {resume.track.artist || 'Tolqyn'}
           </Text>
           <View style={styles.progressTrack}>
             <View
@@ -93,7 +93,7 @@ export default function ContinueListeningSection() {
               : ''}
           </Text>
         </View>
-        <Ionicons name="chevron-forward" size={22} color="#999" />
+        <Ionicons name="chevron-forward" size={22} color="#888888" />
       </Pressable>
     </View>
   );
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     borderWidth: 1,
     borderColor: '#e8e8e8',
-    backgroundColor: '#fafafa',
+    backgroundColor: '#1a1a1a',
   },
   body: {
     flex: 1,
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 11,
     fontWeight: '700',
-    color: '#888',
+    color: '#9a9a9a',
     textTransform: 'uppercase',
     letterSpacing: 0.4,
     marginBottom: 4,
@@ -129,28 +129,28 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 15,
     fontWeight: '700',
-    color: '#111',
+    color: '#ffffff',
   },
   artist: {
     fontSize: 12,
-    color: '#666',
+    color: '#9a9a9a',
     marginTop: 2,
     marginBottom: 8,
   },
   progressTrack: {
     height: 3,
     borderRadius: 2,
-    backgroundColor: '#e5e5e5',
+    backgroundColor: '#2b2b2b',
     overflow: 'hidden',
     marginBottom: 4,
   },
   progressFill: {
     height: '100%',
-    backgroundColor: '#111',
+    backgroundColor: '#2b2b2b',
     borderRadius: 2,
   },
   time: {
     fontSize: 11,
-    color: '#999',
+    color: '#9a9a9a',
   },
 });

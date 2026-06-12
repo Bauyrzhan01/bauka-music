@@ -1,10 +1,10 @@
-import { shadeHex } from './colorUtils';
+import { hexToRgba, shadeHex } from './colorUtils';
 
-const FALLBACK_ACCENT = '#e8e8f0';
+const FALLBACK_ACCENT = '#7c5cff';
 
 function hexToRgb(hex) {
   const normalized = hex.replace('#', '');
-  if (normalized.length !== 6) return { r: 232, g: 232, b: 240 };
+  if (normalized.length !== 6) return { r: 124, g: 92, b: 255 };
 
   return {
     r: parseInt(normalized.slice(0, 2), 16),
@@ -17,73 +17,79 @@ function luminance(rgb) {
   return (0.299 * rgb.r + 0.587 * rgb.g + 0.114 * rgb.b) / 255;
 }
 
+function mixHex(a, b, ratio) {
+  const ar = hexToRgb(a);
+  const br = hexToRgb(b);
+  const mix = (x, y) => Math.round(x * (1 - ratio) + y * ratio);
+  const toHex = (n) => n.toString(16).padStart(2, '0');
+  return `#${toHex(mix(ar.r, br.r))}${toHex(mix(ar.g, br.g))}${toHex(mix(ar.b, br.b))}`;
+}
+
 /**
- * Светлая обложка → светлый фон + тёмные элементы.
- * Тёмная обложка → тёмный фон + светлые элементы.
+ * Премиальная тёмная тема плеера: ambient-свечение из цвета обложки.
  */
 export function buildPlayerTheme(accentHex) {
   const accent = accentHex?.startsWith('#') ? accentHex : FALLBACK_ACCENT;
   const coverIsLight = luminance(hexToRgb(accent)) > 0.5;
 
-  const background = coverIsLight
-    ? shadeHex(accent, 0.62)
-    : shadeHex(accent, -0.45);
-  const miniBackground = coverIsLight
-    ? shadeHex(accent, 0.4)
-    : shadeHex(accent, -0.52);
+  const neon = coverIsLight ? shadeHex(accent, -0.15) : shadeHex(accent, 0.35);
+  const glow = shadeHex(accent, coverIsLight ? 0.1 : 0.45);
+  const deep = mixHex('#050508', accent, 0.22);
+  const background = mixHex('#000000', deep, 0.85);
+  const spotifyBg = mixHex('#121212', accent, 0.52);
+  const backgroundSoft = mixHex('#0a0a12', accent, 0.18);
+  const spotifyGreen = '#1DB954';
 
-  // Светлая обложка → тёмные элементы; тёмная → светлые (по обложке, не по фону)
-  const isLight = coverIsLight;
-
-  const text = coverIsLight ? '#121212' : '#f5f5f5';
-  const textMuted = coverIsLight
-    ? 'rgba(18,18,18,0.65)'
-    : 'rgba(245,245,245,0.75)';
-  const icon = text;
-  const border = coverIsLight
-    ? 'rgba(0,0,0,0.12)'
-    : 'rgba(255,255,255,0.18)';
-  const progressBg = coverIsLight
-    ? 'rgba(0,0,0,0.08)'
-    : 'rgba(255,255,255,0.16)';
-  const surface = coverIsLight
-    ? 'rgba(255,255,255,0.72)'
-    : 'rgba(0,0,0,0.28)';
-  const surfaceBorder = coverIsLight
-    ? 'rgba(0,0,0,0.1)'
-    : 'rgba(255,255,255,0.12)';
+  const text = '#ffffff';
+  const textMuted = 'rgba(255,255,255,0.62)';
+  const icon = '#ffffff';
+  const border = 'rgba(255,255,255,0.14)';
+  const progressBg = 'rgba(255,255,255,0.1)';
+  const surface = 'rgba(255,255,255,0.08)';
+  const surfaceBorder = 'rgba(255,255,255,0.16)';
 
   return {
     accent,
+    neon,
+    glow,
+    gradientStart: mixHex(background, glow, 0.35),
+    gradientMid: mixHex(background, accent, 0.28),
+    gradientEnd: '#000000',
+    orb1: hexToRgba(glow, 0.55),
+    orb2: hexToRgba(neon, 0.4),
+    orb3: hexToRgba(shadeHex(accent, -0.2), 0.35),
     background,
-    backgroundSoft: coverIsLight
-      ? shadeHex(accent, 0.48)
-      : shadeHex(accent, -0.32),
+    spotifyBg,
+    spotifyGreen,
+    backgroundSoft,
     coverIsLight,
     surface,
     surfaceBorder,
-    isLight,
-    tone: coverIsLight ? 'onLight' : 'onDark',
+    isLight: false,
+    tone: 'onDark',
     text,
     textMuted,
     icon,
     border,
     progressBg,
-    playBtn: coverIsLight ? '#121212' : '#f5f5f5',
-    playIcon: coverIsLight ? '#ffffff' : '#121212',
-    modeBtn: coverIsLight ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.18)',
-    modeBtnActive: coverIsLight ? '#121212' : '#f5f5f5',
-    modeIcon: coverIsLight ? '#121212' : '#f5f5f5',
-    modeIconActive: coverIsLight ? '#ffffff' : '#121212',
-    artworkVariant: coverIsLight ? 'light' : 'dark',
-    eqVariant: coverIsLight ? 'light' : 'wave',
-    favoriteActive: coverIsLight ? '#c41e3a' : '#ff6b8a',
-    miniBackground,
+    playBtn: hexToRgba('#ffffff', 0.95),
+    playIcon: '#0a0a0f',
+    playBtnGlow: hexToRgba(neon, 0.65),
+    modeBtn: 'rgba(255,255,255,0.1)',
+    modeBtnActive: hexToRgba(neon, 0.85),
+    modeIcon: 'rgba(255,255,255,0.85)',
+    modeIconActive: '#0a0a0f',
+    artworkVariant: 'dark',
+    eqVariant: 'wave',
+    favoriteActive: '#ff4d8d',
+    miniBackground: mixHex('#14141c', accent, 0.2),
     panelTitle: text,
     panelText: textMuted,
-    addBtnBg: coverIsLight ? '#121212' : '#f5f5f5',
-    addBtnText: coverIsLight ? '#ffffff' : '#121212',
-    loader: coverIsLight ? '#121212' : '#f5f5f5',
+    addBtnBg: hexToRgba(neon, 0.9),
+    addBtnText: '#0a0a0f',
+    loader: '#ffffff',
+    glassBg: 'rgba(255,255,255,0.06)',
+    glassBorder: 'rgba(255,255,255,0.14)',
   };
 }
 

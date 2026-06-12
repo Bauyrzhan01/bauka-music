@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 function StatCard({ icon, value, label }) {
   return (
     <View style={styles.card}>
-      <Ionicons name={icon} size={14} color="#111" />
+      <Ionicons name={icon} size={14} color="#ffffff" />
       <Text style={styles.value}>{value}</Text>
       <Text style={styles.label} numberOfLines={1}>
         {label}
@@ -39,10 +39,10 @@ const styles = StyleSheet.create({
   card: {
     flex: 1,
     minWidth: 0,
-    backgroundColor: '#f8f8f8',
+    backgroundColor: '#1a1a1a',
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#eee',
+    borderColor: '#333333',
     paddingVertical: 8,
     paddingHorizontal: 4,
     alignItems: 'center',
@@ -51,11 +51,11 @@ const styles = StyleSheet.create({
   value: {
     fontSize: 15,
     fontWeight: '800',
-    color: '#111',
+    color: '#ffffff',
   },
   label: {
     fontSize: 9,
-    color: '#666',
+    color: '#9a9a9a',
     fontWeight: '500',
     textAlign: 'center',
   },

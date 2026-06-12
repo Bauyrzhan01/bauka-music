@@ -12,7 +12,7 @@ export default function OfflineTracksSection() {
   if (!offlineTracks.length) {
     return (
       <View style={styles.emptyWrap}>
-        <Ionicons name="cloud-download-outline" size={22} color="#999" />
+        <Ionicons name="cloud-download-outline" size={22} color="#888888" />
         <Text style={styles.emptyTitle}>Офлайн</Text>
         <Text style={styles.emptyText}>
           Нажмите ↓ на карточке трека, чтобы слушать без сети
@@ -35,7 +35,7 @@ export default function OfflineTracksSection() {
   return (
     <View style={styles.wrap}>
       <View style={styles.header}>
-        <Ionicons name="cloud-done-outline" size={20} color="#111" />
+        <Ionicons name="cloud-done-outline" size={20} color="#ffffff" />
         <Text style={styles.title}>Скачанные</Text>
         <Text style={styles.count}>{offlineTracks.length}</Text>
       </View>
@@ -75,12 +75,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#111',
+    color: '#ffffff',
     flex: 1,
   },
   count: {
     fontSize: 13,
-    color: '#888',
+    color: '#9a9a9a',
     fontWeight: '600',
   },
   row: {
@@ -94,19 +94,19 @@ const styles = StyleSheet.create({
     padding: 14,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: '#eee',
-    backgroundColor: '#fafafa',
+    borderColor: '#333333',
+    backgroundColor: '#1a1a1a',
     alignItems: 'center',
   },
   emptyTitle: {
     fontSize: 15,
     fontWeight: '700',
-    color: '#111',
+    color: '#ffffff',
     marginTop: 6,
   },
   emptyText: {
     fontSize: 12,
-    color: '#888',
+    color: '#9a9a9a',
     textAlign: 'center',
     marginTop: 4,
     lineHeight: 18,

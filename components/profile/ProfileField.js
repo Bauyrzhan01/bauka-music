@@ -38,7 +38,7 @@ export default function ProfileField({
           <Text style={styles.readonlyText} selectable>
             {value || '—'}
           </Text>
-          <Ionicons name="lock-closed-outline" size={14} color="#bbb" />
+          <Ionicons name="lock-closed-outline" size={14} color="#666666" />
         </View>
       )}
       {hint ? <Text style={styles.hint}>{hint}</Text> : null}
@@ -58,17 +58,17 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 13,
     fontWeight: '600',
-    color: '#666',
+    color: '#9a9a9a',
   },
   input: {
     borderWidth: 1,
-    borderColor: '#e5e5e5',
+    borderColor: '#333333',
     borderRadius: 12,
-    backgroundColor: '#fafafa',
+    backgroundColor: '#1a1a1a',
     paddingHorizontal: 14,
     paddingVertical: 12,
     fontSize: 16,
-    color: '#111',
+    color: '#ffffff',
   },
   inputMultiline: {
     minHeight: 88,
@@ -79,9 +79,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     borderWidth: 1,
-    borderColor: '#eee',
+    borderColor: '#333333',
     borderRadius: 12,
-    backgroundColor: '#f4f4f5',
+    backgroundColor: '#2b2b2b',
     paddingHorizontal: 14,
     paddingVertical: 12,
     gap: 8,
@@ -89,11 +89,11 @@ const styles = StyleSheet.create({
   readonlyText: {
     flex: 1,
     fontSize: 15,
-    color: '#555',
+    color: '#9a9a9a',
   },
   hint: {
     fontSize: 12,
-    color: '#999',
+    color: '#9a9a9a',
     lineHeight: 16,
   },
 });

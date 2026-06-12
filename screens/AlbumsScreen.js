@@ -18,7 +18,7 @@ export default function AlbumsScreen({ onBack, onOpenAuthor }) {
   const listHeader = (
     <View style={styles.hero}>
       <View style={styles.heroIcon}>
-        <Ionicons name="albums" size={28} color="#111" />
+        <Ionicons name="albums" size={28} color="#ffffff" />
       </View>
       <Text style={styles.heroTitle}>Альбомы</Text>
       <Text style={styles.heroSubtitle}>
@@ -34,7 +34,7 @@ export default function AlbumsScreen({ onBack, onOpenAuthor }) {
 
   const emptyComponent = (
     <View style={styles.empty}>
-      <Ionicons name="albums-outline" size={48} color="#ccc" />
+      <Ionicons name="albums-outline" size={48} color="#666666" />
       <Text style={styles.emptyTitle}>Пока нет альбомов</Text>
       <Text style={styles.emptyText}>
         Откройте профиль автора и нажмите «Добавить альбом»
@@ -46,7 +46,7 @@ export default function AlbumsScreen({ onBack, onOpenAuthor }) {
     <View style={styles.container}>
       <View style={styles.topBar}>
         <Pressable onPress={onBack} hitSlop={8}>
-          <Ionicons name="arrow-back" size={24} color="#111" />
+          <Ionicons name="arrow-back" size={24} color="#ffffff" />
         </Pressable>
         <Text style={styles.topTitle}>Альбомы</Text>
         <View style={styles.topSpacer} />
@@ -92,9 +92,9 @@ export default function AlbumsScreen({ onBack, onOpenAuthor }) {
               hitSlop={8}
               style={styles.removeBtn}
             >
-              <Ionicons name="close-circle" size={22} color="#bbb" />
+              <Ionicons name="close-circle" size={22} color="#666666" />
             </Pressable>
-            <Ionicons name="chevron-forward" size={20} color="#ccc" />
+            <Ionicons name="chevron-forward" size={20} color="#666666" />
           </Pressable>
         )}
       />
@@ -105,7 +105,7 @@ export default function AlbumsScreen({ onBack, onOpenAuthor }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#000000',
   },
   topBar: {
     flexDirection: 'row',
@@ -113,14 +113,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor: '#eee',
+    borderBottomColor: '#333333',
   },
   topTitle: {
     flex: 1,
     textAlign: 'center',
     fontSize: 17,
     fontWeight: '700',
-    color: '#111',
+    color: '#ffffff',
   },
   topSpacer: {
     width: 24,
@@ -138,18 +138,18 @@ const styles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: 28,
-    backgroundColor: '#e0e7ff',
+    backgroundColor: '#1a1a1a',
     alignItems: 'center',
     justifyContent: 'center',
   },
   heroTitle: {
     fontSize: 22,
     fontWeight: '700',
-    color: '#111',
+    color: '#ffffff',
   },
   heroSubtitle: {
     fontSize: 14,
-    color: '#888',
+    color: '#9a9a9a',
   },
   card: {
     flexDirection: 'row',
@@ -160,8 +160,8 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 14,
     borderWidth: 1,
-    borderColor: '#eee',
-    backgroundColor: '#fafafa',
+    borderColor: '#333333',
+    backgroundColor: '#1a1a1a',
   },
   cover: {
     width: 52,
@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
     width: 52,
     height: 52,
     borderRadius: 8,
-    backgroundColor: '#e8e8e8',
+    backgroundColor: '#2b2b2b',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -184,11 +184,11 @@ const styles = StyleSheet.create({
   cardTitle: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#111',
+    color: '#ffffff',
   },
   cardMeta: {
     fontSize: 13,
-    color: '#666',
+    color: '#9a9a9a',
   },
   removeBtn: {
     padding: 4,
@@ -202,11 +202,11 @@ const styles = StyleSheet.create({
   emptyTitle: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#111',
+    color: '#ffffff',
   },
   emptyText: {
     fontSize: 14,
-    color: '#888',
+    color: '#9a9a9a',
     textAlign: 'center',
     lineHeight: 20,
   },

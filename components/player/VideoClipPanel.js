@@ -104,7 +104,7 @@ export default function VideoClipPanel({
         ]}
       >
         <View style={[styles.errorBox, { height: videoHeight }]}>
-          <Ionicons name="alert-circle-outline" size={28} color="#888" />
+          <Ionicons name="alert-circle-outline" size={28} color="#888888" />
           <Text style={styles.errorText}>
             Клип нельзя встроить. Проверьте ссылку в админке.
           </Text>
@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
   errorBox: {
     width: '100%',
     borderRadius: 12,
-    backgroundColor: '#f4f4f5',
+    backgroundColor: '#2b2b2b',
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 16,
@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
   },
   errorText: {
     fontSize: 12,
-    color: '#666',
+    color: '#9a9a9a',
     textAlign: 'center',
     lineHeight: 17,
   },

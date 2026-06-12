@@ -70,7 +70,7 @@ export default function WebAdminLayout({
   const sidebarContent = (
     <>
       <View>
-        <Text style={styles.logo}>Bauka Music</Text>
+        <Text style={styles.logo}>Tolqyn</Text>
         <Text style={styles.logoSub}>Admin Panel</Text>
         <NavList
           activeSection={activeSection}

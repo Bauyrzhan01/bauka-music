@@ -127,14 +127,14 @@ const styles = StyleSheet.create({
   errorBox: {
     width: '100%',
     borderRadius: 12,
-    backgroundColor: '#f4f4f5',
+    backgroundColor: '#2b2b2b',
     alignItems: 'center',
     justifyContent: 'center',
     padding: 16,
   },
   errorText: {
     fontSize: 12,
-    color: '#666',
+    color: '#9a9a9a',
     textAlign: 'center',
   },
 });

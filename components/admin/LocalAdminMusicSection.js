@@ -92,7 +92,7 @@ export default function LocalAdminMusicSection({
   if (!ready) {
     return (
       <View style={styles.loading}>
-        <ActivityIndicator color="#111" />
+        <ActivityIndicator color="#ffffff" />
       </View>
     );
   }
@@ -133,7 +133,7 @@ export default function LocalAdminMusicSection({
           onPress={() => setShowDevicePicker(true)}
           disabled={busy}
         >
-          <Ionicons name="phone-portrait-outline" size={18} color="#111" />
+          <Ionicons name="phone-portrait-outline" size={18} color="#ffffff" />
           <Text style={styles.secondaryBtnText}>С телефона</Text>
         </Pressable>
       </View>
@@ -149,11 +149,11 @@ export default function LocalAdminMusicSection({
           }}
           disabled={busy || !entries.length}
         >
-          <Ionicons name="share-outline" size={16} color="#111" />
+          <Ionicons name="share-outline" size={16} color="#ffffff" />
           <Text style={styles.backupBtnText}>Экспорт</Text>
         </Pressable>
         <Pressable style={styles.backupBtn} onPress={handleImport} disabled={busy}>
-          <Ionicons name="download-outline" size={16} color="#111" />
+          <Ionicons name="download-outline" size={16} color="#ffffff" />
           <Text style={styles.backupBtnText}>Импорт</Text>
         </Pressable>
       </View>
@@ -178,14 +178,14 @@ export default function LocalAdminMusicSection({
               onPress={() => onOpenKaraoke?.(entry.id)}
               accessibilityLabel="Караоке"
             >
-              <Ionicons name="mic-outline" size={20} color="#555" />
+              <Ionicons name="mic-outline" size={20} color="#9a9a9a" />
             </Pressable>
             <Pressable
               style={styles.iconBtn}
               onPress={() => onEditTrack?.(entry.id)}
               accessibilityLabel="Редактировать"
             >
-              <Ionicons name="create-outline" size={20} color="#555" />
+              <Ionicons name="create-outline" size={20} color="#9a9a9a" />
             </Pressable>
             <Pressable
               style={styles.iconBtn}
@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
   },
   hint: {
     fontSize: 13,
-    color: '#666',
+    color: '#9a9a9a',
     lineHeight: 19,
   },
   actions: {
@@ -224,7 +224,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: 6,
-    backgroundColor: '#111',
+    backgroundColor: '#2b2b2b',
     borderRadius: 12,
     paddingVertical: 12,
   },
@@ -245,7 +245,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
   },
   secondaryBtnText: {
-    color: '#111',
+    color: '#ffffff',
     fontWeight: '600',
     fontSize: 14,
   },
@@ -265,16 +265,16 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#e5e5e5',
+    borderColor: '#333333',
   },
   backupBtnText: {
     fontSize: 13,
     fontWeight: '600',
-    color: '#111',
+    color: '#ffffff',
   },
   empty: {
     fontSize: 14,
-    color: '#888',
+    color: '#9a9a9a',
     lineHeight: 20,
     marginTop: 4,
   },
@@ -284,7 +284,7 @@ const styles = StyleSheet.create({
     gap: 4,
     paddingVertical: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
+    borderBottomColor: '#333333',
   },
   rowText: {
     flex: 1,
@@ -293,12 +293,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 15,
     fontWeight: '600',
-    color: '#111',
+    color: '#ffffff',
   },
   meta: {
     marginTop: 2,
     fontSize: 12,
-    color: '#888',
+    color: '#9a9a9a',
   },
   iconBtn: {
     padding: 8,

@@ -15,16 +15,24 @@ function main() {
   const adbPath = getAdbPath(androidHome);
   const device = requireUsbDevice(adbPath);
 
-  console.log('[android] Bauka Music — установка по USB\n');
+  console.log('[android] Tolqyn — установка по USB\n');
   console.log(`  Устройство: ${device.model} (${device.serial})`);
   console.log(`  Вариант:    ${variant}`);
   if (variant === 'release') {
     console.log('  Режим:      автономный (без Metro на ПК)');
   } else {
-    console.log('  Режим:      разработка (нужен npm start на ПК)');
+    console.log('  Режим:      Expo dev (нужен npm start на ПК)');
+    console.log('  Metro:      http://localhost:8081');
   }
   console.log('\nПервая сборка обычно 10–20 мин (Gradle + зависимости).');
   console.log('Повторные — 2–5 мин.\n');
+
+  if (variant === 'debug') {
+    const reverse = run(adbPath, ['reverse', 'tcp:8081', 'tcp:8081'], env);
+    if (reverse.status === 0) {
+      console.log('[android] adb reverse tcp:8081 — телефон видит Metro на ПК\n');
+    }
+  }
 
   const args = [
     'expo',
@@ -33,11 +41,8 @@ function main() {
     device.model,
     '--variant',
     variant,
+    '--no-bundler',
   ];
-
-  if (variant === 'release') {
-    args.push('--no-bundler');
-  }
 
   const result = run('npx', args, env);
   if (result.status !== 0) {

@@ -257,7 +257,7 @@ export default function AuthorProfileScreen({ authorId, authorName, onBack }) {
 
   const emptyComponent = (
     <View style={styles.empty}>
-      <Ionicons name="musical-notes-outline" size={40} color="#ccc" />
+      <Ionicons name="musical-notes-outline" size={40} color="#666666" />
       <Text style={styles.emptyText}>У этого автора пока нет треков</Text>
     </View>
   );
@@ -271,7 +271,7 @@ export default function AuthorProfileScreen({ authorId, authorName, onBack }) {
       </View>
 
       {loading ? (
-        <ActivityIndicator style={styles.loader} color="#111" />
+        <ActivityIndicator style={styles.loader} color="#ffffff" />
       ) : error ? (
         <View style={styles.errorBox}>
           <Text style={styles.errorText}>{error}</Text>
@@ -306,20 +306,20 @@ export default function AuthorProfileScreen({ authorId, authorName, onBack }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#000000',
   },
   topBar: {
     alignItems: 'center',
     paddingHorizontal: 16,
     paddingVertical: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#eee',
+    borderBottomColor: '#333333',
   },
   topTitle: {
     fontSize: 16,
     fontWeight: '700',
     textAlign: 'center',
-    color: '#111',
+    color: '#ffffff',
   },
   loader: {
     marginTop: 48,
@@ -338,7 +338,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 10,
     borderRadius: 8,
-    backgroundColor: '#111',
+    backgroundColor: '#2b2b2b',
   },
   retryText: {
     color: '#fff',
@@ -362,7 +362,7 @@ const styles = StyleSheet.create({
     width: 88,
     height: 88,
     borderRadius: 44,
-    backgroundColor: '#111',
+    backgroundColor: '#2b2b2b',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -383,7 +383,7 @@ const styles = StyleSheet.create({
     width: 28,
     height: 28,
     borderRadius: 14,
-    backgroundColor: '#111',
+    backgroundColor: '#2b2b2b',
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 2,
@@ -391,7 +391,7 @@ const styles = StyleSheet.create({
   },
   avatarHint: {
     fontSize: 12,
-    color: '#999',
+    color: '#9a9a9a',
     marginBottom: 8,
     textAlign: 'center',
   },
@@ -403,19 +403,19 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 24,
     fontWeight: '700',
-    color: '#111',
+    color: '#ffffff',
     textAlign: 'center',
   },
   bio: {
     fontSize: 14,
-    color: '#555',
+    color: '#9a9a9a',
     textAlign: 'center',
     lineHeight: 20,
     marginTop: 8,
   },
   stats: {
     fontSize: 13,
-    color: '#888',
+    color: '#9a9a9a',
     marginTop: 8,
   },
   albumCard: {
@@ -428,23 +428,23 @@ const styles = StyleSheet.create({
     padding: 14,
     borderRadius: 14,
     borderWidth: 1.5,
-    borderColor: '#e5e5e5',
-    backgroundColor: '#fafafa',
+    borderColor: '#333333',
+    backgroundColor: '#1a1a1a',
   },
   albumCardActive: {
     borderColor: '#a5b4fc',
-    backgroundColor: '#eef2ff',
+    backgroundColor: '#1a1a1a',
   },
   albumIconWrap: {
     width: 44,
     height: 44,
     borderRadius: 22,
-    backgroundColor: '#f0f0f0',
+    backgroundColor: '#2b2b2b',
     alignItems: 'center',
     justifyContent: 'center',
   },
   albumIconWrapActive: {
-    backgroundColor: '#4f46e5',
+    backgroundColor: '#2b2b2b',
   },
   albumTextWrap: {
     flex: 1,
@@ -454,18 +454,18 @@ const styles = StyleSheet.create({
   albumTitle: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#111',
+    color: '#ffffff',
   },
   albumHint: {
     fontSize: 12,
-    color: '#666',
+    color: '#9a9a9a',
     lineHeight: 16,
   },
   sectionTitle: {
     alignSelf: 'stretch',
     fontSize: 14,
     fontWeight: '700',
-    color: '#666',
+    color: '#9a9a9a',
     marginTop: 20,
     paddingHorizontal: 16,
   },
@@ -476,6 +476,6 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     fontSize: 14,
-    color: '#888',
+    color: '#9a9a9a',
   },
 });

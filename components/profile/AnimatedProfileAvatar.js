@@ -157,7 +157,7 @@ export default function AnimatedProfileAvatar({
               contentFit="cover"
             />
           ) : (
-            <Ionicons name="person" size={40} color="#000" />
+            <Ionicons name="person" size={40} color="#ffffff" />
           )}
         </View>
       </View>
@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
     width: INNER_SIZE,
     height: INNER_SIZE,
     borderRadius: INNER_SIZE / 2,
-    backgroundColor: '#f2f2f2',
+    backgroundColor: '#1a1a1a',
     alignItems: 'center',
     justifyContent: 'center',
     overflow: 'hidden',

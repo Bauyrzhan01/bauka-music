@@ -41,11 +41,13 @@ yarn-error.*
 /ios
 /android
 
-# большие аудиофайлы (раскомментируйте при необходимости)
-# assets/music/*.mp3
-# assets/music/*.m4a
-# assets/music/*.wav
+# большие аудиофайлы встроенного каталога (раскомментируйте при необходимости)
+# music/*.mp3
+# music/*.m4a
+# music/*.wav
+# music/*.aac
 
 server/data/banners.json
 server/uploads/*
 !server/uploads/.gitkeep
+server/downloads/*.apk

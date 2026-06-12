@@ -1,3 +1,4 @@
+import { Image } from 'react-native';
 import { getApiBaseUrl } from '../constants/api';
 
 export function buildCoverUrl(coverFile) {
@@ -7,15 +8,23 @@ export function buildCoverUrl(coverFile) {
   return `${base}/uploads/covers/${encodeURIComponent(coverFile)}`;
 }
 
+function resolveBundledCover(track) {
+  if (track.cover == null) return null;
+  return Image.resolveAssetSource(track.cover)?.uri ?? null;
+}
+
 export function enrichTrackWithCover(track) {
   if (!track) return track;
 
   const coverFile = track.coverFile ?? null;
+  const bundledCoverUrl = resolveBundledCover(track);
+  const coverUrl =
+    track.coverUrl ?? bundledCoverUrl ?? buildCoverUrl(coverFile);
 
   return {
     ...track,
     coverFile,
-    coverUrl: track.coverUrl ?? buildCoverUrl(coverFile),
+    coverUrl,
   };
 }
 
