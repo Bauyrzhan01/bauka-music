@@ -13,9 +13,10 @@ export default function PlayerVolumeSlider({
   onSlidingComplete,
   onDisplayValueChange,
   height = 160,
-  accentColor = '#fff',
+  accentColor = '#1DB954',
   large = false,
   showIcon = true,
+  showTooltip = true,
 }) {
   const [trackHeight, setTrackHeight] = useState(0);
   const [isScrubbing, setIsScrubbing] = useState(false);
@@ -32,24 +33,28 @@ export default function PlayerVolumeSlider({
   onDisplayValueChangeRef.current = onDisplayValueChange;
 
   const displayValue = isScrubbing ? scrubValue : value;
+  const fillPercent = displayValue * 100;
+
+  const thumbSize = large ? 20 : 18;
+  const thumbOffset = thumbSize / 2;
+  const thumbTop = (1 - displayValue) * trackHeight - thumbOffset;
+  const trackWidth = 8;
+  const hitWidth = large ? 88 : 52;
+  const thumbLeft = (hitWidth - thumbSize) / 2;
 
   const emitDisplayValue = useCallback((next) => {
     onDisplayValueChangeRef.current?.(next);
   }, []);
 
-  const applyValue = useCallback((next) => {
-    scrubValueRef.current = next;
-    setScrubValue(next);
-    emitDisplayValue(next);
-    onValueChangeRef.current?.(next);
-  }, [emitDisplayValue]);
-  const fillPercent = displayValue * 100;
-  const thumbSize = large ? 32 : 20;
-  const thumbOffset = thumbSize / 2;
-  const thumbTop = (1 - displayValue) * trackHeight - thumbOffset;
-  const trackWidth = large ? 8 : 4;
-  const hitWidth = large ? 72 : 44;
-  const thumbLeft = (hitWidth - thumbSize) / 2;
+  const applyValue = useCallback(
+    (next) => {
+      scrubValueRef.current = next;
+      setScrubValue(next);
+      emitDisplayValue(next);
+      onValueChangeRef.current?.(next);
+    },
+    [emitDisplayValue]
+  );
 
   useEffect(() => {
     if (!isScrubbing) {
@@ -67,7 +72,6 @@ export default function PlayerVolumeSlider({
         onPanResponderGrant: (event) => {
           const heightPx = trackHeightRef.current;
           if (!heightPx) return;
-
           const next = ratioFromY(event.nativeEvent.locationY, heightPx);
           startValueRef.current = next;
           setIsScrubbing(true);
@@ -76,7 +80,6 @@ export default function PlayerVolumeSlider({
         onPanResponderMove: (_, gestureState) => {
           const heightPx = trackHeightRef.current;
           if (!heightPx) return;
-
           const next = Math.max(
             0,
             Math.min(startValueRef.current - gestureState.dy / heightPx, 1)
@@ -110,16 +113,15 @@ export default function PlayerVolumeSlider({
         ? 'volume-low'
         : 'volume-high';
 
+  const clampedThumbTop =
+    trackHeight > 0
+      ? Math.max(-thumbOffset, Math.min(thumbTop, trackHeight - thumbOffset))
+      : 0;
+
+  const tooltipTop = clampedThumbTop + thumbOffset - 14;
+
   return (
     <View style={[styles.wrap, { width: hitWidth }]}>
-      {isScrubbing && !large ? (
-        <View style={styles.tooltip}>
-          <Text style={styles.tooltipText}>
-            {Math.round(displayValue * 100)}%
-          </Text>
-        </View>
-      ) : null}
-
       <View
         style={[styles.trackHit, { height, width: hitWidth }]}
         onLayout={onTrackLayout}
@@ -128,7 +130,7 @@ export default function PlayerVolumeSlider({
         <View style={[styles.track, { width: trackWidth }]}>
           <View
             style={[
-              styles.fill,
+              styles.range,
               {
                 height: `${fillPercent}%`,
                 backgroundColor: accentColor,
@@ -138,31 +140,46 @@ export default function PlayerVolumeSlider({
         </View>
 
         {trackHeight > 0 ? (
-          <View
-            style={[
-              styles.thumb,
-              large && styles.thumbLarge,
-              {
-                left: thumbLeft,
-                width: thumbSize,
-                height: thumbSize,
-                borderRadius: thumbSize / 2,
-                top: Math.max(
-                  -thumbOffset,
-                  Math.min(thumbTop, trackHeight - thumbOffset)
-                ),
-              },
-              isScrubbing && !large && styles.thumbActive,
-              isScrubbing && large && styles.thumbLargeActive,
-            ]}
-          />
+          <>
+            {showTooltip && isScrubbing ? (
+              <View
+                style={[
+                  styles.tooltip,
+                  {
+                    top: tooltipTop,
+                    left: hitWidth / 2 + trackWidth / 2 + 10,
+                  },
+                ]}
+                pointerEvents="none"
+              >
+                <Text style={styles.tooltipText}>
+                  {Math.round(displayValue * 100)}
+                </Text>
+              </View>
+            ) : null}
+
+            <View
+              style={[
+                styles.thumb,
+                {
+                  left: thumbLeft,
+                  width: thumbSize,
+                  height: thumbSize,
+                  borderRadius: thumbSize / 2,
+                  top: clampedThumbTop,
+                  borderColor: accentColor,
+                },
+                isScrubbing && styles.thumbActive,
+              ]}
+            />
+          </>
         ) : null}
       </View>
 
       {showIcon ? (
         <Ionicons
           name={iconName}
-          size={large ? 26 : 18}
+          size={large ? 24 : 18}
           color="rgba(255,255,255,0.72)"
           style={styles.icon}
         />
@@ -175,55 +192,53 @@ const styles = StyleSheet.create({
   wrap: {
     alignItems: 'center',
   },
-  tooltip: {
-    marginBottom: 6,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 8,
-    backgroundColor: 'rgba(0,0,0,0.75)',
-  },
-  tooltipText: {
-    color: '#fff',
-    fontSize: 11,
-    fontWeight: '700',
-    fontVariant: ['tabular-nums'],
-  },
   trackHit: {
     alignItems: 'center',
     justifyContent: 'center',
   },
   track: {
     height: '100%',
-    borderRadius: 2,
-    backgroundColor: 'rgba(255,255,255,0.25)',
+    borderRadius: 999,
+    backgroundColor: 'rgba(255,255,255,0.18)',
     overflow: 'hidden',
     justifyContent: 'flex-end',
   },
-  fill: {
+  range: {
     width: '100%',
-    borderRadius: 2,
+    borderRadius: 999,
   },
   thumb: {
     position: 'absolute',
-    backgroundColor: '#fff',
+    backgroundColor: '#121212',
     borderWidth: 2,
-    borderColor: 'rgba(255,255,255,0.9)',
-  },
-  thumbLarge: {
-    borderWidth: 3,
     shadowColor: '#000',
-    shadowOpacity: 0.35,
-    shadowRadius: 8,
-    shadowOffset: { width: 0, height: 2 },
-    elevation: 4,
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 1 },
+    elevation: 3,
   },
   thumbActive: {
-    transform: [{ scale: 1.1 }],
+    transform: [{ scale: 1.06 }],
   },
-  thumbLargeActive: {
-    transform: [{ scale: 1.08 }],
+  tooltip: {
+    position: 'absolute',
+    minWidth: 36,
+    paddingHorizontal: 8,
+    paddingVertical: 5,
+    borderRadius: 8,
+    backgroundColor: 'rgba(24,24,24,0.96)',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.12)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  tooltipText: {
+    color: '#fff',
+    fontSize: 12,
+    fontWeight: '700',
+    fontVariant: ['tabular-nums'],
   },
   icon: {
-    marginTop: 10,
+    marginTop: 12,
   },
 });

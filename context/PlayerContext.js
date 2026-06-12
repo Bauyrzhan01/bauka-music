@@ -7,6 +7,7 @@ import {
   useRef,
   useState,
 } from 'react';
+import { PermissionsAndroid, Platform } from 'react-native';
 import { createAudioPlayer, setAudioModeAsync } from 'expo-audio';
 import { LOCAL_TRACKS } from '../data/localTracks';
 import { buildPlaybackTrack, getBaseTrackId } from '../utils/buildPlaybackTrack';
@@ -21,6 +22,12 @@ import {
 import { pushRecentTrackId } from '../storage/recentListensStorage';
 import { subscribeCatalogTracks } from '../utils/catalogTrackRegistry';
 import { loadAppPreferences, saveAppPreferences } from '../storage/appPreferences';
+import {
+  buildMediaSessionMetadataAsync,
+  getLockScreenOptions,
+  refreshMediaSessionMetadata,
+  supportsMediaSessionControls,
+} from '../utils/mediaSessionMetadata';
 
 const PlayerContext = createContext(null);
 
@@ -28,6 +35,23 @@ const REPEAT_MODES = ['off', 'all', 'one'];
 
 let activeNativePlayer = null;
 let activeNativeListener = null;
+let lockScreenPlayer = null;
+
+async function ensureNotificationPermission() {
+  if (Platform.OS !== 'android' || Platform.Version < 33) return;
+  try {
+    const granted = await PermissionsAndroid.check(
+      PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS
+    );
+    if (!granted) {
+      await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS
+      );
+    }
+  } catch {
+    // optional — playback notification may still work via foreground service
+  }
+}
 
 function releaseActiveNativePlayer() {
   activeNativeListener?.remove();
@@ -44,23 +68,40 @@ function releaseActiveNativePlayer() {
   }
 }
 
-function lockScreenMetadata(track) {
-  if (!track) return null;
-  return {
-    title: track.title || 'Без названия',
-    artist: track.artist || 'Автор',
-  };
+function clearLockScreenForPlayer(player) {
+  if (!player) return;
+  try {
+    if (typeof player.clearLockScreenControls === 'function') {
+      player.clearLockScreenControls();
+    } else if (typeof player.setActiveForLockScreen === 'function') {
+      player.setActiveForLockScreen(false);
+    }
+  } catch {
+    // player may already be released
+  }
+  if (lockScreenPlayer === player) {
+    lockScreenPlayer = null;
+  }
 }
 
-function applyLockScreenMetadata(player, track) {
-  const metadata = lockScreenMetadata(track);
-  if (!player || !metadata) return;
-  if (typeof player.updateLockScreenMetadata === 'function') {
-    player.updateLockScreenMetadata(metadata);
+async function syncMediaSession(player, track) {
+  if (!supportsMediaSessionControls() || !player || !track) return;
+
+  const metadata = await buildMediaSessionMetadataAsync(track);
+  if (!metadata || typeof player.setActiveForLockScreen !== 'function') return;
+
+  await ensureNotificationPermission();
+
+  if (lockScreenPlayer === player) {
+    await refreshMediaSessionMetadata(player, track);
     return;
   }
-  if (typeof player.setActiveForLockScreen === 'function') {
-    player.setActiveForLockScreen(true, metadata);
+
+  player.setActiveForLockScreen(true, metadata, getLockScreenOptions());
+  lockScreenPlayer = player;
+
+  if (Platform.OS === 'ios') {
+    await refreshMediaSessionMetadata(player, track);
   }
 }
 
@@ -73,6 +114,7 @@ export function PlayerProvider({ children }) {
   const advancingRef = useRef(false);
   const repeatModeRef = useRef('off');
   const volumeRef = useRef(1);
+  const mediaSessionReadyRef = useRef(false);
 
   const [baseTrack, setBaseTrack] = useState(null);
   const [volume, setVolumeState] = useState(1);
@@ -97,12 +139,8 @@ export function PlayerProvider({ children }) {
   }, []);
 
   const releasePlayer = useCallback(() => {
-    try {
-      playerRef.current?.clearLockScreenControls?.();
-      activeNativePlayer?.clearLockScreenControls?.();
-    } catch {
-      // ignore
-    }
+    clearLockScreenForPlayer(playerRef.current);
+    clearLockScreenForPlayer(activeNativePlayer);
     listenerRef.current?.remove();
     listenerRef.current = null;
     playerRef.current = null;
@@ -131,7 +169,7 @@ export function PlayerProvider({ children }) {
     );
 
     const player = playerRef.current ?? activeNativePlayer;
-    applyLockScreenMetadata(player, mergedBase);
+    syncMediaSession(player, displayTrack);
   }, []);
 
   const playTrackInternalRef = useRef(null);
@@ -142,6 +180,19 @@ export function PlayerProvider({ children }) {
     setPositionMillis(Math.round(status.currentTime * 1000));
     setDurationMillis(Math.round(status.duration * 1000));
     setIsPlaying(status.playing);
+
+    if (
+      supportsMediaSessionControls() &&
+      status.duration > 0 &&
+      !mediaSessionReadyRef.current
+    ) {
+      const player = playerRef.current ?? activeNativePlayer;
+      const track = currentTrackRef.current;
+      if (player && track && lockScreenPlayer === player) {
+        mediaSessionReadyRef.current = true;
+        refreshMediaSessionMetadata(player, track).catch(() => {});
+      }
+    }
 
     if (status.didJustFinish && !advancingRef.current) {
       advancingRef.current = true;
@@ -232,7 +283,12 @@ export function PlayerProvider({ children }) {
         return;
       }
 
-      const player = createAudioPlayer(source, { updateInterval: 500 });
+      mediaSessionReadyRef.current = false;
+
+      const player = createAudioPlayer(source, {
+        updateInterval: 500,
+        keepAudioSessionActive: Platform.OS === 'ios',
+      });
       const listener = player.addListener(
         'playbackStatusUpdate',
         handleStatusUpdate
@@ -243,7 +299,7 @@ export function PlayerProvider({ children }) {
       playerRef.current = player;
       listenerRef.current = listener;
 
-      applyLockScreenMetadata(player, baseTrack);
+      await syncMediaSession(player, displayTrack);
 
       player.volume = volumeRef.current;
       player.play();
@@ -252,6 +308,10 @@ export function PlayerProvider({ children }) {
       if (startPositionMs > 0) {
         await player.seekTo(startPositionMs / 1000);
         setPositionMillis(startPositionMs);
+      }
+
+      if (Platform.OS === 'ios') {
+        await syncMediaSession(player, displayTrack);
       }
     },
     [releasePlayer, handleStatusUpdate]
@@ -324,6 +384,10 @@ export function PlayerProvider({ children }) {
       player.pause();
     } else {
       player.play();
+    }
+
+    if (Platform.OS === 'ios' && lockScreenPlayer === player) {
+      refreshMediaSessionMetadata(player, currentTrackRef.current).catch(() => {});
     }
   }, [getPlayer, isVideoPlayback]);
 
@@ -432,7 +496,7 @@ export function PlayerProvider({ children }) {
       await setAudioModeAsync({
         playsInSilentMode: true,
         shouldPlayInBackground: true,
-        interruptionMode: 'duckOthers',
+        interruptionMode: 'doNotMix',
       });
     };
 
